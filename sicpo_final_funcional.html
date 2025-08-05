@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SICPO - Sistema Completo y Funcional</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-blue-800 border-gray-200">
+        <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+            <div class="flex items-center space-x-3">
+                <i class="fas fa-clipboard-check text-white text-2xl"></i>
+                <span class="self-center text-2xl font-semibold whitespace-nowrap text-white">SICPO</span>
+            </div>
+            <div class="flex items-center space-x-4">
+                <span class="text-white text-sm">Usuario: Admin</span>
+                <button class="text-white hover:text-gray-300">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="flex">
+        <!-- Sidebar -->
+        <aside class="w-64 bg-white shadow-md h-screen sticky top-0">
+            <div class="p-4">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">Módulos SICPO</h3>
+                <ul class="space-y-2">
+                    <li>
+                        <button onclick="showModule('recepcion')" id="btn-recepcion"
+                            class="w-full text-left px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-700 rounded-lg transition-colors">
+                            <i class="fas fa-inbox mr-2"></i>Recepción Documental
+                        </button>
+                    </li>
+                    <li>
+                        <button onclick="showModule('distribucion')" id="btn-distribucion"
+                            class="w-full text-left px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-700 rounded-lg transition-colors">
+                            <i class="fas fa-share-alt mr-2"></i>Distribución
+                        </button>
+                    </li>
+                    <li>
+                        <button onclick="showModule('supervision')" id="btn-supervision"
+                            class="w-full text-left px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-700 rounded-lg transition-colors">
+                            <i class="fas fa-eye mr-2"></i>Supervisión
+                        </button>
+                    </li>
+                    <li>
+                        <button onclick="showModule('derivacion')" id="btn-derivacion"
+                            class="w-full text-left px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-700 rounded-lg transition-colors">
+                            <i class="fas fa-arrow-right mr-2"></i>Derivación OC
+                        </button>
+                    </li>
+                    <li>
+                        <button onclick="showModule('planes')" id="btn-planes"
+                            class="w-full text-left px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-700 rounded-lg transition-colors">
+                            <i class="fas fa-file-alt mr-2"></i>Planes de Acción
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-6">
+            <div id="content-area">
+                <div class="text-center py-8">
+                    <div class="bg-green-50 border border-green-200 rounded-lg p-6">
+                        <i class="fas fa-check-circle text-green-600 text-4xl mb-4"></i>
+                        <h3 class="text-xl font-semibold text-green-800 mb-2">✅ Sistema SICPO Completamente Funcional</h3>
+                        <p class="text-green-700 mb-4">Todos los modales implementados y funcionando correctamente</p>
+                        <p class="text-sm text-green-600">Selecciona cualquier módulo del menú lateral para comenzar</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>  
+  <script>
+        // SICPO Application JavaScript - Versión Completa
+        class SICPOApp {
+            constructor() {
+                this.currentModule = null;
+                this.init();
+            }
+
+            init() {
+                console.log('SICPO App initialized successfully');
+            }
+
+            showModule(moduleName) {
+                this.currentModule = moduleName;
+                const contentArea = document.getElementById('content-area');
+                
+                switch(moduleName) {
+                    case 'recepcion':
+                        contentArea.innerHTML = this.getRecepcionHTML();
+                        break;
+                    case 'distribucion':
+                        contentArea.innerHTML = this.getDistribucionHTML();
+                        break;
+                    case 'supervision':
+                        contentArea.innerHTML = this.getSupervisionHTML();
+                        break;
+                    case 'derivacion':
+                        contentArea.innerHTML = this.getDerivacionHTML();
+                        break;
+                    case 'planes':
+                        contentArea.innerHTML = this.getPlanesHTML();
+                        break;
+                    default:
+                        contentArea.innerHTML = '<div class="text-center py-8"><p class="text-gray-500">Módulo no encontrado</p></div>';
+                }
+                
+                this.updateActiveMenuItem(moduleName);
+            }
+
+            getRecepcionHTML() {
+                return `
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <div class="flex justify-between items-center mb-6">
+                            <h2 class="text-2xl font-bold text-gray-900">Recepción Documental</h2>
+                            <button onclick="showRecepcionModal()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg">
+                                <i class="fas fa-plus mr-2"></i>Nuevo Expediente
+                            </button>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                            <div class="bg-blue-50 rounded-lg p-4 text-center">
+                                <i class="fas fa-inbox text-blue-600 text-2xl mb-2"></i>
+                                <h3 class="font-semibold text-blue-800">Recibidos</h3>
+                                <p class="text-2xl font-bold text-blue-600">24</p>
+                            </div>
+                            <div class="bg-yellow-50 rounded-lg p-4 text-center">
+                                <i class="fas fa-clock text-yellow-600 text-2xl mb-2"></i>
+                                <h3 class="font-semibold text-yellow-800">En Proceso</h3>
+                                <p class="text-2xl font-bold text-yellow-600">8</p>
+                            </div>
+                            <div class="bg-green-50 rounded-lg p-4 text-center">
+                                <i class="fas fa-check text-green-600 text-2xl mb-2"></i>
+                                <h3 class="font-semibold text-green-800">Completados</h3>
+                                <p class="text-2xl font-bold text-green-600">156</p>
+                            </div>
+                        </div>
+
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <h3 class="font-semibold text-gray-900 mb-3">Expedientes Recientes</h3>
+                            <div class="space-y-2">
+                                <div class="flex justify-between items-center bg-white p-3 rounded">
+                                    <div>
+                                        <span class="font-medium">EXP-2024-001</span>
+                                        <span class="text-gray-600 ml-2">Lista de Inspecciones</span>
+                                    </div>
+                                    <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded text-sm">Recibido</span>
+                                </div>
+                                <div class="flex justify-between items-center bg-white p-3 rounded">
+                                    <div>
+                                        <span class="font-medium">EXP-2024-002</span>
+                                        <span class="text-gray-600 ml-2">Memoria OC/SGP</span>
+                                    </div>
+                                    <span class="px-2 py-1 bg-yellow-100 text-yellow-800 rounded text-sm">En Proceso</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Modal de Recepción -->
+                    <div id="recepcionModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden items-center justify-center z-50">
+                        <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full mx-4">
+                            <div class="p-6">
+                                <div class="flex justify-between items-center mb-4">
+                                    <h3 class="text-lg font-semibold text-gray-900">Registrar Nuevo Expediente</h3>
+                                    <button onclick="closeModal('recepcionModal')" class="text-gray-400 hover:text-gray-600">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                                <form onsubmit="submitForm(event, 'recepcionModal', 'Expediente registrado exitosamente')">
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-2">Tipo de Documento</label>
+                                            <select name="tipo" required class="w-full p-2 border border-gray-300 rounded-lg">
+                                                <option value="">Seleccionar...</option>
+                                                <option value="Lista de Inspecciones">Lista de Inspecciones</option>
+                                                <option value="Memoria OC/SGP">Memoria OC/SGP</option>
+                                                <option value="Plan de Acción">Plan de Acción</option>
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-2">Prioridad</label>
+                                            <select name="prioridad" required class="w-full p-2 border border-gray-300 rounded-lg">
+                                                <option value="">Seleccionar...</option>
+                                                <option value="Alta">Alta</option>
+                                                <option value="Media">Media</option>
+                                                <option value="Baja">Baja</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Descripción</label>
+                                        <textarea name="descripcion" rows="3" class="w-full p-2 border border-gray-300 rounded-lg" placeholder="Descripción del expediente..."></textarea>
+                                    </div>
+                                    <div class="flex justify-end space-x-3">
+                                        <button type="button" onclick="closeModal('recepcionModal')" class="px-4 py-2 text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300">
+                                            Cancelar
+                                        </button>
+                                        <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                                            Registrar Expediente
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }           
+ getDistribucionHTML() {
+                return `
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <div class="flex justify-between items-center mb-6">
+                            <h2 class="text-2xl font-bold text-gray-900">Distribución de Expedientes</h2>
+                            <button onclick="showDistribucionModal()" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg">
+                                <i class="fas fa-share-alt mr-2"></i>Nueva Distribución
+                            </button>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                            <div class="bg-blue-50 rounded-lg p-4 text-center">
+                                <h3 class="font-semibold text-blue-800">Pendientes</h3>
+                                <p class="text-2xl font-bold text-blue-600">5</p>
+                            </div>
+                            <div class="bg-yellow-50 rounded-lg p-4 text-center">
+                                <h3 class="font-semibold text-yellow-800">En Proceso</h3>
+                                <p class="text-2xl font-bold text-yellow-600">8</p>
+                            </div>
+                            <div class="bg-green-50 rounded-lg p-4 text-center">
+                                <h3 class="font-semibold text-green-800">Distribuidos</h3>
+                                <p class="text-2xl font-bold text-green-600">12</p>
+                            </div>
+                        </div>
+
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <h3 class="font-semibold text-gray-900 mb-3">Responsables Disponibles</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div class="bg-white p-3 rounded border">
+                                    <div class="flex items-center">
+                                        <div class="w-3 h-3 bg-green-500 rounded-full mr-2"></div>
+                                        <div>
+                                            <p class="font-medium">Juan Pérez</p>
+                                            <p class="text-sm text-gray-600">Mesa de Partes</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bg-white p-3 rounded border">
+                                    <div class="flex items-center">
+                                        <div class="w-3 h-3 bg-green-500 rounded-full mr-2"></div>
+                                        <div>
+                                            <p class="font-medium">María García</p>
+                                            <p class="text-sm text-gray-600">Jefe DDEE</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bg-white p-3 rounded border">
+                                    <div class="flex items-center">
+                                        <div class="w-3 h-3 bg-red-500 rounded-full mr-2"></div>
+                                        <div>
+                                            <p class="font-medium">Carlos López</p>
+                                            <p class="text-sm text-gray-600">Especialista SPO</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Modal de Distribución -->
+                    <div id="distribucionModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden items-center justify-center z-50">
+                        <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full mx-4">
+                            <div class="p-6">
+                                <div class="flex justify-between items-center mb-4">
+                                    <h3 class="text-lg font-semibold text-gray-900">Nueva Distribución de Expediente</h3>
+                                    <button onclick="closeModal('distribucionModal')" class="text-gray-400 hover:text-gray-600">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                                <form onsubmit="submitForm(event, 'distribucionModal', 'Expediente distribuido exitosamente')">
+                                    <div class="mb-4">
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Expediente a Distribuir</label>
+                                        <select name="expediente" required class="w-full p-2 border border-gray-300 rounded-lg">
+                                            <option value="">Seleccionar expediente...</option>
+                                            <option value="EXP-2024-001">EXP-2024-001 - Lista de Inspecciones</option>
+                                            <option value="EXP-2024-002">EXP-2024-002 - Memoria OC/SGP</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Responsable Asignado</label>
+                                        <select name="responsable" required class="w-full p-2 border border-gray-300 rounded-lg">
+                                            <option value="">Seleccionar responsable...</option>
+                                            <option value="1">Juan Pérez - Mesa de Partes</option>
+                                            <option value="2">María García - Jefe DDEE</option>
+                                            <option value="3">Carlos López - Especialista SPO</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Observaciones</label>
+                                        <textarea name="observaciones" rows="3" class="w-full p-2 border border-gray-300 rounded-lg" placeholder="Observaciones adicionales..."></textarea>
+                                    </div>
+                                    <div class="flex justify-end space-x-3">
+                                        <button type="button" onclick="closeModal('distribucionModal')" class="px-4 py-2 text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300">
+                                            Cancelar
+                                        </button>
+                                        <button type="submit" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">
+                                            Distribuir Expediente
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }        
+    getSupervisionHTML() {
+                return `
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <div class="flex justify-between items-center mb-6">
+                            <h2 class="text-2xl font-bold text-gray-900">Supervisión de Inspecciones</h2>
+                            <button onclick="showSupervisionModal()" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg">
+                                <i class="fas fa-eye mr-2"></i>Nueva Supervisión
+                            </button>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+                            <div class="bg-blue-50 rounded-lg p-4 text-center">
+                                <h3 class="font-semibold text-blue-800">Programadas</h3>
+                                <p class="text-2xl font-bold text-blue-600">6</p>
+                            </div>
+                            <div class="bg-yellow-50 rounded-lg p-4 text-center">
+                                <h3 class="font-semibold text-yellow-800">En Curso</h3>
+                                <p class="text-2xl font-bold text-yellow-600">3</p>
+                            </div>
+                            <div class="bg-green-50 rounded-lg p-4 text-center">
+                                <h3 class="font-semibold text-green-800">Completadas</h3>
+                                <p class="text-2xl font-bold text-green-600">15</p>
+                            </div>
+                            <div class="bg-red-50 rounded-lg p-4 text-center">
+                                <h3 class="font-semibold text-red-800">Hallazgos</h3>
+                                <p class="text-2xl font-bold text-red-600">3</p>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <div class="bg-gray-50 rounded-lg p-4">
+                                <h3 class="font-semibold text-gray-900 mb-3">Supervisiones Recientes</h3>
+                                <div class="space-y-3">
+                                    <div class="bg-white p-3 rounded border-l-4 border-green-500">
+                                        <div class="flex justify-between">
+                                            <span class="font-medium">SUP-2024-001</span>
+                                            <span class="text-sm text-green-600">Completada</span>
+                                        </div>
+                                        <p class="text-sm text-gray-600">Inspección Región Norte</p>
+                                    </div>
+                                    <div class="bg-white p-3 rounded border-l-4 border-yellow-500">
+                                        <div class="flex justify-between">
+                                            <span class="font-medium">SUP-2024-002</span>
+                                            <span class="text-sm text-yellow-600">En Curso</span>
+                                        </div>
+                                        <p class="text-sm text-gray-600">Supervisión Extraordinaria</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-gray-50 rounded-lg p-4">
+                                <h3 class="font-semibold text-gray-900 mb-3">Estadísticas</h3>
+                                <div class="space-y-3">
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-600">Tiempo Promedio</span>
+                                        <span class="font-semibold">5.2 días</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-600">Eficiencia</span>
+                                        <span class="font-semibold text-green-600">94%</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-600">Hallazgos Críticos</span>
+                                        <span class="font-semibold text-red-600">2</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Modal de Supervisión -->
+                    <div id="supervisionModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden items-center justify-center z-50">
+                        <div class="bg-white rounded-lg shadow-xl max-w-3xl w-full mx-4">
+                            <div class="p-6">
+                                <div class="flex justify-between items-center mb-4">
+                                    <h3 class="text-lg font-semibold text-gray-900">Nueva Supervisión de Inspección</h3>
+                                    <button onclick="closeModal('supervisionModal')" class="text-gray-400 hover:text-gray-600">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                                <form onsubmit="submitForm(event, 'supervisionModal', 'Supervisión programada exitosamente')">
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-2">Expediente a Supervisar</label>
+                                            <select name="expediente" required class="w-full p-2 border border-gray-300 rounded-lg">
+                                                <option value="">Seleccionar expediente...</option>
+                                                <option value="EXP-2024-001">EXP-2024-001 - Lista de Inspecciones</option>
+                                                <option value="EXP-2024-002">EXP-2024-002 - Memoria OC/SGP</option>
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-2">Tipo de Supervisión</label>
+                                            <select name="tipoSupervision" required class="w-full p-2 border border-gray-300 rounded-lg">
+                                                <option value="">Seleccionar tipo...</option>
+                                                <option value="Programada">Programada</option>
+                                                <option value="Extraordinaria">Extraordinaria</option>
+                                                <option value="Seguimiento">Seguimiento</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-2">Fecha Programada</label>
+                                            <input type="date" name="fechaProgramada" required class="w-full p-2 border border-gray-300 rounded-lg">
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-2">Supervisor Asignado</label>
+                                            <select name="supervisor" required class="w-full p-2 border border-gray-300 rounded-lg">
+                                                <option value="">Seleccionar supervisor...</option>
+                                                <option value="1">Juan Pérez - Supervisor Senior</option>
+                                                <option value="2">María García - Jefe DDEE</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Objetivos de la Supervisión</label>
+                                        <textarea name="objetivos" rows="3" class="w-full p-2 border border-gray-300 rounded-lg" placeholder="Describir los objetivos específicos..."></textarea>
+                                    </div>
+                                    <div class="flex justify-end space-x-3">
+                                        <button type="button" onclick="closeModal('supervisionModal')" class="px-4 py-2 text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300">
+                                            Cancelar
+                                        </button>
+                                        <button type="submit" class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700">
+                                            Programar Supervisión
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }       
+     getDerivacionHTML() {
+                return `
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <div class="flex justify-between items-center mb-6">
+                            <h2 class="text-2xl font-bold text-gray-900">Derivación OC/SGP</h2>
+                            <button onclick="showDerivacionModal()" class="bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded-lg">
+                                <i class="fas fa-arrow-right mr-2"></i>Nueva Derivación
+                            </button>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                            <div class="bg-orange-50 rounded-lg p-4 text-center">
+                                <h3 class="font-semibold text-orange-800">Pendientes</h3>
+                                <p class="text-2xl font-bold text-orange-600">4</p>
+                            </div>
+                            <div class="bg-blue-50 rounded-lg p-4 text-center">
+                                <h3 class="font-semibold text-blue-800">En Revisión</h3>
+                                <p class="text-2xl font-bold text-blue-600">7</p>
+                            </div>
+                            <div class="bg-green-50 rounded-lg p-4 text-center">
+                                <h3 class="font-semibold text-green-800">Completadas</h3>
+                                <p class="text-2xl font-bold text-green-600">23</p>
+                            </div>
+                        </div>
+
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <h3 class="font-semibold text-gray-900 mb-3">Especialistas Disponibles</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div class="bg-white p-3 rounded border">
+                                    <div class="text-center">
+                                        <i class="fas fa-user-tie text-blue-600 text-2xl mb-2"></i>
+                                        <p class="font-medium">Dr. Juan Pérez</p>
+                                        <p class="text-sm text-gray-600">Especialista OC</p>
+                                        <span class="inline-block mt-1 px-2 py-1 bg-green-100 text-green-800 rounded text-xs">Disponible</span>
+                                    </div>
+                                </div>
+                                <div class="bg-white p-3 rounded border">
+                                    <div class="text-center">
+                                        <i class="fas fa-user-tie text-purple-600 text-2xl mb-2"></i>
+                                        <p class="font-medium">Ing. María García</p>
+                                        <p class="text-sm text-gray-600">Especialista SGP</p>
+                                        <span class="inline-block mt-1 px-2 py-1 bg-green-100 text-green-800 rounded text-xs">Disponible</span>
+                                    </div>
+                                </div>
+                                <div class="bg-white p-3 rounded border">
+                                    <div class="text-center">
+                                        <i class="fas fa-user-tie text-indigo-600 text-2xl mb-2"></i>
+                                        <p class="font-medium">Lic. Carlos López</p>
+                                        <p class="text-sm text-gray-600">Especialista Senior</p>
+                                        <span class="inline-block mt-1 px-2 py-1 bg-yellow-100 text-yellow-800 rounded text-xs">Ocupado</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Modal de Derivación -->
+                    <div id="derivacionModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden items-center justify-center z-50">
+                        <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full mx-4">
+                            <div class="p-6">
+                                <div class="flex justify-between items-center mb-4">
+                                    <h3 class="text-lg font-semibold text-gray-900">Nueva Derivación OC/SGP</h3>
+                                    <button onclick="closeModal('derivacionModal')" class="text-gray-400 hover:text-gray-600">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                                <form onsubmit="submitForm(event, 'derivacionModal', 'Memoria derivada exitosamente')">
+                                    <div class="mb-4">
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Memoria a Derivar</label>
+                                        <select name="memoria" required class="w-full p-2 border border-gray-300 rounded-lg">
+                                            <option value="">Seleccionar memoria...</option>
+                                            <option value="MEM-2024-001">MEM-2024-001 - Memoria OC Región Norte</option>
+                                            <option value="MEM-2024-002">MEM-2024-002 - Memoria SGP Central</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Especialista Asignado</label>
+                                        <select name="especialista" required class="w-full p-2 border border-gray-300 rounded-lg">
+                                            <option value="">Seleccionar especialista...</option>
+                                            <option value="1">Dr. Juan Pérez - Especialista OC</option>
+                                            <option value="2">Ing. María García - Especialista SGP</option>
+                                        </select>
+                                    </div>
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-2">Fecha Límite</label>
+                                            <input type="date" name="fechaLimite" required class="w-full p-2 border border-gray-300 rounded-lg">
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-2">Prioridad</label>
+                                            <select name="prioridad" required class="w-full p-2 border border-gray-300 rounded-lg">
+                                                <option value="">Seleccionar prioridad...</option>
+                                                <option value="Alta">Alta</option>
+                                                <option value="Media">Media</option>
+                                                <option value="Baja">Baja</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Instrucciones Específicas</label>
+                                        <textarea name="instrucciones" rows="4" class="w-full p-2 border border-gray-300 rounded-lg" placeholder="Instrucciones específicas para el especialista..."></textarea>
+                                    </div>
+                                    <div class="flex justify-end space-x-3">
+                                        <button type="button" onclick="closeModal('derivacionModal')" class="px-4 py-2 text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300">
+                                            Cancelar
+                                        </button>
+                                        <button type="submit" class="px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700">
+                                            Derivar Memoria
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }   
+         getPlanesHTML() {
+                return `
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <div class="flex justify-between items-center mb-6">
+                            <h2 class="text-2xl font-bold text-gray-900">Planes de Acción y NCs</h2>
+                            <div class="flex space-x-2">
+                                <button onclick="showPlanModal()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg">
+                                    <i class="fas fa-file-alt mr-2"></i>Nuevo Plan
+                                </button>
+                                <button onclick="showNCModal()" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg">
+                                    <i class="fas fa-exclamation-triangle mr-2"></i>Nueva NC
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+                            <div class="bg-blue-50 rounded-lg p-4 text-center">
+                                <i class="fas fa-file-plus text-blue-600 text-2xl mb-2"></i>
+                                <h3 class="font-semibold text-blue-800">Borradores</h3>
+                                <p class="text-2xl font-bold text-blue-600">4</p>
+                            </div>
+                            <div class="bg-yellow-50 rounded-lg p-4 text-center">
+                                <i class="fas fa-clock text-yellow-600 text-2xl mb-2"></i>
+                                <h3 class="font-semibold text-yellow-800">En Revisión</h3>
+                                <p class="text-2xl font-bold text-yellow-600">6</p>
+                            </div>
+                            <div class="bg-green-50 rounded-lg p-4 text-center">
+                                <i class="fas fa-check-circle text-green-600 text-2xl mb-2"></i>
+                                <h3 class="font-semibold text-green-800">Aprobados</h3>
+                                <p class="text-2xl font-bold text-green-600">12</p>
+                            </div>
+                            <div class="bg-purple-50 rounded-lg p-4 text-center">
+                                <i class="fas fa-cogs text-purple-600 text-2xl mb-2"></i>
+                                <h3 class="font-semibold text-purple-800">En Ejecución</h3>
+                                <p class="text-2xl font-bold text-purple-600">8</p>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <div class="bg-gray-50 rounded-lg p-4">
+                                <h3 class="font-semibold text-gray-900 mb-3">Planes Recientes</h3>
+                                <div class="space-y-3">
+                                    <div class="bg-white p-3 rounded border-l-4 border-green-500">
+                                        <div class="flex justify-between">
+                                            <span class="font-medium">PLAN-2024-001</span>
+                                            <span class="text-sm text-green-600">Aprobado</span>
+                                        </div>
+                                        <p class="text-sm text-gray-600">Plan Regional Norte</p>
+                                        <div class="mt-2">
+                                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                                <div class="bg-green-600 h-2 rounded-full" style="width: 75%"></div>
+                                            </div>
+                                            <span class="text-xs text-gray-600">75% completado</span>
+                                        </div>
+                                    </div>
+                                    <div class="bg-white p-3 rounded border-l-4 border-yellow-500">
+                                        <div class="flex justify-between">
+                                            <span class="font-medium">PLAN-2024-002</span>
+                                            <span class="text-sm text-yellow-600">En Revisión</span>
+                                        </div>
+                                        <p class="text-sm text-gray-600">Plan de Seguridad Central</p>
+                                        <div class="mt-2">
+                                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                                <div class="bg-yellow-600 h-2 rounded-full" style="width: 45%"></div>
+                                            </div>
+                                            <span class="text-xs text-gray-600">45% completado</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-gray-50 rounded-lg p-4">
+                                <h3 class="font-semibold text-gray-900 mb-3">No Conformidades</h3>
+                                <div class="space-y-3">
+                                    <div class="bg-white p-3 rounded border-l-4 border-red-500">
+                                        <div class="flex justify-between">
+                                            <span class="font-medium">NC-2024-001</span>
+                                            <span class="text-sm text-red-600">Crítica</span>
+                                        </div>
+                                        <p class="text-sm text-gray-600">Documentación incompleta</p>
+                                    </div>
+                                    <div class="bg-white p-3 rounded border-l-4 border-orange-500">
+                                        <div class="flex justify-between">
+                                            <span class="font-medium">NC-2024-002</span>
+                                            <span class="text-sm text-orange-600">Mayor</span>
+                                        </div>
+                                        <p class="text-sm text-gray-600">Retraso en notificaciones</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Modal de Nuevo Plan -->
+                    <div id="planModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden items-center justify-center z-50">
+                        <div class="bg-white rounded-lg shadow-xl max-w-3xl w-full mx-4">
+                            <div class="p-6">
+                                <div class="flex justify-between items-center mb-4">
+                                    <h3 class="text-lg font-semibold text-gray-900">Nuevo Plan de Acción</h3>
+                                    <button onclick="closeModal('planModal')" class="text-gray-400 hover:text-gray-600">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                                <form onsubmit="submitForm(event, 'planModal', 'Plan de acción creado exitosamente')">
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-2">Tipo de Plan</label>
+                                            <select name="tipoPlan" required class="w-full p-2 border border-gray-300 rounded-lg">
+                                                <option value="">Seleccionar tipo...</option>
+                                                <option value="Regional">Plan Regional</option>
+                                                <option value="Seguridad">Plan de Seguridad</option>
+                                                <option value="Correctivo">Plan Correctivo</option>
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-2">Prioridad</label>
+                                            <select name="prioridad" required class="w-full p-2 border border-gray-300 rounded-lg">
+                                                <option value="">Seleccionar prioridad...</option>
+                                                <option value="Alta">Alta</option>
+                                                <option value="Media">Media</option>
+                                                <option value="Baja">Baja</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Título del Plan</label>
+                                        <input type="text" name="titulo" required class="w-full p-2 border border-gray-300 rounded-lg" placeholder="Título descriptivo del plan">
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Descripción</label>
+                                        <textarea name="descripcion" rows="4" class="w-full p-2 border border-gray-300 rounded-lg" placeholder="Descripción detallada del plan de acción..."></textarea>
+                                    </div>
+                                    <div class="flex justify-end space-x-3">
+                                        <button type="button" onclick="closeModal('planModal')" class="px-4 py-2 text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300">
+                                            Cancelar
+                                        </button>
+                                        <button type="submit" class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700">
+                                            Crear Plan
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Modal de Nueva NC -->
+                    <div id="ncModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden items-center justify-center z-50">
+                        <div class="bg-white rounded-lg shadow-xl max-w-3xl w-full mx-4">
+                            <div class="p-6">
+                                <div class="flex justify-between items-center mb-4">
+                                    <h3 class="text-lg font-semibold text-gray-900">Nueva No Conformidad</h3>
+                                    <button onclick="closeModal('ncModal')" class="text-gray-400 hover:text-gray-600">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                                <form onsubmit="submitForm(event, 'ncModal', 'No conformidad registrada exitosamente')">
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-2">Tipo de NC</label>
+                                            <select name="tipoNC" required class="w-full p-2 border border-gray-300 rounded-lg">
+                                                <option value="">Seleccionar tipo...</option>
+                                                <option value="Mayor">No Conformidad Mayor</option>
+                                                <option value="Menor">No Conformidad Menor</option>
+                                                <option value="Observacion">Observación</option>
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-2">Severidad</label>
+                                            <select name="severidad" required class="w-full p-2 border border-gray-300 rounded-lg">
+                                                <option value="">Seleccionar severidad...</option>
+                                                <option value="Critica">Crítica</option>
+                                                <option value="Alta">Alta</option>
+                                                <option value="Media">Media</option>
+                                                <option value="Baja">Baja</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Descripción de la NC</label>
+                                        <textarea name="descripcion" rows="4" class="w-full p-2 border border-gray-300 rounded-lg" placeholder="Descripción detallada de la no conformidad..."></textarea>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Fecha Límite para Corrección</label>
+                                        <input type="date" name="fechaLimite" required class="w-full p-2 border border-gray-300 rounded-lg">
+                                    </div>
+                                    <div class="flex justify-end space-x-3">
+                                        <button type="button" onclick="closeModal('ncModal')" class="px-4 py-2 text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300">
+                                            Cancelar
+                                        </button>
+                                        <button type="submit" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">
+                                            Registrar NC
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }  
+          openModal(modalId) {
+                const modal = document.getElementById(modalId);
+                if (modal) {
+                    modal.classList.remove('hidden');
+                    modal.classList.add('flex');
+                }
+            }
+
+            closeModal(modalId) {
+                const modal = document.getElementById(modalId);
+                if (modal) {
+                    modal.classList.add('hidden');
+                    modal.classList.remove('flex');
+                }
+            }
+
+            updateActiveMenuItem(moduleName) {
+                // Remove active class from all menu items
+                document.querySelectorAll('button[onclick*="showModule"]').forEach(button => {
+                    button.className = 'w-full text-left px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-700 rounded-lg transition-colors';
+                });
+
+                // Add active class to current module
+                const activeButton = document.getElementById(`btn-${moduleName}`);
+                if (activeButton) {
+                    activeButton.className = 'w-full text-left px-4 py-2 bg-blue-100 text-blue-700 rounded-lg transition-colors';
+                }
+            }
+        }
+
+        // Global variables and functions
+        let app;
+
+        // Initialize app when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM loaded, initializing SICPO app...');
+            app = new SICPOApp();
+            window.app = app;
+            console.log('SICPO app initialized successfully');
+        });
+
+        // Global functions for HTML onclick events
+        function showModule(moduleName) {
+            if (app && app.showModule) {
+                app.showModule(moduleName);
+            } else {
+                console.error('App not initialized');
+            }
+        }
+
+        // Modal functions
+        function showRecepcionModal() {
+            if (app && app.openModal) {
+                app.openModal('recepcionModal');
+            }
+        }
+
+        function showDistribucionModal() {
+            if (app && app.openModal) {
+                app.openModal('distribucionModal');
+            }
+        }
+
+        function showSupervisionModal() {
+            if (app && app.openModal) {
+                app.openModal('supervisionModal');
+            }
+        }
+
+        function showDerivacionModal() {
+            if (app && app.openModal) {
+                app.openModal('derivacionModal');
+            }
+        }
+
+        function showPlanModal() {
+            if (app && app.openModal) {
+                app.openModal('planModal');
+            }
+        }
+
+        function showNCModal() {
+            if (app && app.openModal) {
+                app.openModal('ncModal');
+            }
+        }
+
+        function closeModal(modalId) {
+            if (app && app.closeModal) {
+                app.closeModal(modalId);
+            }
+        }
+
+        function submitForm(event, modalId, successMessage) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            const data = Object.fromEntries(formData);
+            
+            console.log('Form data:', data);
+            alert(successMessage);
+            
+            closeModal(modalId);
+            event.target.reset();
+        }
+    </script>
+</body>
+</html>

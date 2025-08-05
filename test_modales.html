@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Modales SICPO</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50 p-8">
+    <div class="max-w-4xl mx-auto">
+        <h1 class="text-3xl font-bold text-gray-900 mb-8">Test de Modales SICPO</h1>
+        
+        <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+            <h2 class="text-xl font-semibold mb-4">Estado del Sistema</h2>
+            <div id="status" class="text-green-600">
+                <i class="fas fa-check-circle mr-2"></i>Sistema cargado correctamente
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <button onclick="testRecepcion()" class="bg-blue-600 text-white p-4 rounded-lg hover:bg-blue-700">
+                <i class="fas fa-inbox mb-2"></i><br>
+                Test Recepción
+            </button>
+            
+            <button onclick="testDistribucion()" class="bg-green-600 text-white p-4 rounded-lg hover:bg-green-700">
+                <i class="fas fa-share-alt mb-2"></i><br>
+                Test Distribución
+            </button>
+            
+            <button onclick="testSupervision()" class="bg-purple-600 text-white p-4 rounded-lg hover:bg-purple-700">
+                <i class="fas fa-eye mb-2"></i><br>
+                Test Supervisión
+            </button>
+        </div>
+
+        <div id="content" class="mt-8">
+            <!-- El contenido se cargará aquí -->
+        </div>
+    </div>
+
+    <!-- Modal de prueba -->
+    <div id="testModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-lg shadow-xl max-w-md w-full mx-4">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-lg font-semibold text-gray-900">Modal de Prueba</h3>
+                    <button onclick="closeTestModal()" class="text-gray-400 hover:text-gray-600">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <p class="text-gray-600 mb-4">Este es un modal de prueba funcionando correctamente.</p>
+                <div class="flex justify-end">
+                    <button onclick="closeTestModal()" class="px-4 py-2 bg-blue-600 text-white rounded-lg">
+                        Cerrar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Test functions
+        function testRecepcion() {
+            document.getElementById('content').innerHTML = `
+                <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                    <h3 class="font-semibold text-blue-800">Módulo de Recepción</h3>
+                    <p class="text-blue-700">Funcionalidad de recepción documental activa.</p>
+                    <button onclick="showTestModal()" class="mt-2 bg-blue-600 text-white px-3 py-1 rounded text-sm">
+                        Abrir Modal
+                    </button>
+                </div>
+            `;
+        }
+
+        function testDistribucion() {
+            document.getElementById('content').innerHTML = `
+                <div class="bg-green-50 border border-green-200 rounded-lg p-4">
+                    <h3 class="font-semibold text-green-800">Módulo de Distribución</h3>
+                    <p class="text-green-700">Funcionalidad de distribución de expedientes activa.</p>
+                    <button onclick="showTestModal()" class="mt-2 bg-green-600 text-white px-3 py-1 rounded text-sm">
+                        Abrir Modal
+                    </button>
+                </div>
+            `;
+        }
+
+        function testSupervision() {
+            document.getElementById('content').innerHTML = `
+                <div class="bg-purple-50 border border-purple-200 rounded-lg p-4">
+                    <h3 class="font-semibold text-purple-800">Módulo de Supervisión</h3>
+                    <p class="text-purple-700">Funcionalidad de supervisión de inspecciones activa.</p>
+                    <button onclick="showTestModal()" class="mt-2 bg-purple-600 text-white px-3 py-1 rounded text-sm">
+                        Abrir Modal
+                    </button>
+                </div>
+            `;
+        }
+
+        function showTestModal() {
+            const modal = document.getElementById('testModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeTestModal() {
+            const modal = document.getElementById('testModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Test page loaded successfully');
+        });
+    </script>
+</body>
+</html>

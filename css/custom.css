@@ -1,0 +1,265 @@
+/* Custom styles for SICPO Application */
+
+/* Smooth transitions */
+* {
+    transition: all 0.2s ease-in-out;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}
+
+/* Custom button hover effects */
+.btn-primary {
+    @apply bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200;
+}
+
+.btn-secondary {
+    @apply bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-4 rounded-lg transition-colors duration-200;
+}
+
+.btn-success {
+    @apply bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200;
+}
+
+.btn-warning {
+    @apply bg-yellow-600 hover:bg-yellow-700 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200;
+}
+
+.btn-danger {
+    @apply bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200;
+}
+
+/* Card hover effects */
+.card-hover {
+    @apply transition-all duration-200 hover:shadow-lg hover:-translate-y-1;
+}
+
+/* Status indicators */
+.status-indicator {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+}
+
+.status-received {
+    @apply bg-blue-100 text-blue-800;
+}
+
+.status-processing {
+    @apply bg-yellow-100 text-yellow-800;
+}
+
+.status-completed {
+    @apply bg-green-100 text-green-800;
+}
+
+.status-critical {
+    @apply bg-red-100 text-red-800;
+}
+
+/* Priority indicators */
+.priority-high {
+    @apply bg-red-100 text-red-800 border-l-4 border-red-500;
+}
+
+.priority-medium {
+    @apply bg-yellow-100 text-yellow-800 border-l-4 border-yellow-500;
+}
+
+.priority-low {
+    @apply bg-green-100 text-green-800 border-l-4 border-green-500;
+}
+
+/* Progress bars */
+.progress-bar {
+    @apply w-full bg-gray-200 rounded-full h-2;
+}
+
+.progress-fill {
+    @apply h-2 rounded-full transition-all duration-300;
+}
+
+/* Modal animations */
+.modal-enter {
+    animation: modalEnter 0.3s ease-out;
+}
+
+.modal-exit {
+    animation: modalExit 0.3s ease-in;
+}
+
+@keyframes modalEnter {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes modalExit {
+    from {
+        opacity: 1;
+        transform: scale(1);
+    }
+    to {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+}
+
+/* Notification styles */
+.notification {
+    @apply fixed top-4 right-4 p-4 rounded-lg shadow-lg z-50 transform transition-all duration-300;
+}
+
+.notification-enter {
+    @apply translate-x-full opacity-0;
+}
+
+.notification-show {
+    @apply translate-x-0 opacity-100;
+}
+
+.notification-exit {
+    @apply translate-x-full opacity-0;
+}
+
+/* Table enhancements */
+.table-hover tbody tr:hover {
+    @apply bg-gray-50;
+}
+
+.table-striped tbody tr:nth-child(even) {
+    @apply bg-gray-50;
+}
+
+/* Form enhancements */
+.form-input {
+    @apply w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent;
+}
+
+.form-select {
+    @apply w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white;
+}
+
+.form-textarea {
+    @apply w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-vertical;
+}
+
+/* Loading spinner */
+.spinner {
+    @apply inline-block w-4 h-4 border-2 border-gray-300 border-t-blue-600 rounded-full animate-spin;
+}
+
+/* Sidebar active state */
+.sidebar-item-active {
+    @apply bg-blue-50 text-blue-700 border-r-2 border-blue-700;
+}
+
+/* Dashboard cards */
+.dashboard-card {
+    @apply bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow duration-200;
+}
+
+/* Timeline styles */
+.timeline-item {
+    @apply relative pl-8 pb-8;
+}
+
+.timeline-item::before {
+    content: '';
+    @apply absolute left-0 top-2 w-3 h-3 bg-blue-600 rounded-full;
+}
+
+.timeline-item::after {
+    content: '';
+    @apply absolute left-1.5 top-5 w-0.5 h-full bg-gray-300;
+}
+
+.timeline-item:last-child::after {
+    display: none;
+}
+
+/* Responsive utilities */
+@media (max-width: 768px) {
+    .mobile-hidden {
+        display: none;
+    }
+    
+    .mobile-full {
+        width: 100%;
+    }
+    
+    .mobile-stack {
+        flex-direction: column;
+    }
+}
+
+/* Print styles */
+@media print {
+    .no-print {
+        display: none !important;
+    }
+    
+    .print-break {
+        page-break-after: always;
+    }
+    
+    body {
+        font-size: 12pt;
+        line-height: 1.4;
+    }
+    
+    .bg-white {
+        background: white !important;
+    }
+    
+    .text-white {
+        color: black !important;
+    }
+}
+
+/* Accessibility improvements */
+.focus-visible:focus {
+    @apply outline-none ring-2 ring-blue-500 ring-offset-2;
+}
+
+.sr-only {
+    @apply absolute w-px h-px p-0 -m-px overflow-hidden whitespace-nowrap border-0;
+}
+
+/* Dark mode support (optional) */
+@media (prefers-color-scheme: dark) {
+    .dark-mode {
+        @apply bg-gray-900 text-white;
+    }
+    
+    .dark-mode .bg-white {
+        @apply bg-gray-800;
+    }
+    
+    .dark-mode .text-gray-900 {
+        @apply text-gray-100;
+    }
+    
+    .dark-mode .border-gray-300 {
+        @apply border-gray-600;
+    }
+}
