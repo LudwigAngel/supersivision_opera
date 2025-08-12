@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+
 <body class="bg-gray-50">
     <!-- Navigation -->
     <nav class="bg-blue-800 border-gray-200">
@@ -71,15 +73,16 @@
                 <div class="text-center py-8">
                     <div class="bg-green-50 border border-green-200 rounded-lg p-6">
                         <i class="fas fa-check-circle text-green-600 text-4xl mb-4"></i>
-                        <h3 class="text-xl font-semibold text-green-800 mb-2">✅ Sistema SICPO Completamente Funcional</h3>
+                        <h3 class="text-xl font-semibold text-green-800 mb-2">✅ Sistema SICPO Completamente Funcional
+                        </h3>
                         <p class="text-green-700 mb-4">Todos los modales implementados y funcionando correctamente</p>
                         <p class="text-sm text-green-600">Selecciona cualquier módulo del menú lateral para comenzar</p>
                     </div>
                 </div>
             </div>
         </main>
-    </div>  
-  <script>
+    </div>
+    <script>
         // SICPO Application JavaScript - Versión Completa
         class SICPOApp {
             constructor() {
@@ -94,8 +97,8 @@
             showModule(moduleName) {
                 this.currentModule = moduleName;
                 const contentArea = document.getElementById('content-area');
-                
-                switch(moduleName) {
+
+                switch (moduleName) {
                     case 'recepcion':
                         contentArea.innerHTML = this.getRecepcionHTML();
                         break;
@@ -114,7 +117,7 @@
                     default:
                         contentArea.innerHTML = '<div class="text-center py-8"><p class="text-gray-500">Módulo no encontrado</p></div>';
                 }
-                
+
                 this.updateActiveMenuItem(moduleName);
             }
 
@@ -215,8 +218,8 @@
                         </div>
                     </div>
                 `;
-            }           
- getDistribucionHTML() {
+            }
+            getDistribucionHTML() {
                 return `
                     <div class="bg-white rounded-lg shadow-md p-6">
                         <div class="flex justify-between items-center mb-6">
@@ -320,8 +323,8 @@
                         </div>
                     </div>
                 `;
-            }        
-    getSupervisionHTML() {
+            }
+            getSupervisionHTML() {
                 return `
                     <div class="bg-white rounded-lg shadow-md p-6">
                         <div class="flex justify-between items-center mb-6">
@@ -452,8 +455,8 @@
                         </div>
                     </div>
                 `;
-            }       
-     getDerivacionHTML() {
+            }
+            getDerivacionHTML() {
                 return `
                     <div class="bg-white rounded-lg shadow-md p-6">
                         <div class="flex justify-between items-center mb-6">
@@ -568,8 +571,8 @@
                         </div>
                     </div>
                 `;
-            }   
-         getPlanesHTML() {
+            }
+            getPlanesHTML() {
                 return `
                     <div class="bg-white rounded-lg shadow-md p-6">
                         <div class="flex justify-between items-center mb-6">
@@ -767,8 +770,8 @@
                         </div>
                     </div>
                 `;
-            }  
-          openModal(modalId) {
+            }
+            openModal(modalId) {
                 const modal = document.getElementById(modalId);
                 if (modal) {
                     modal.classList.remove('hidden');
@@ -802,7 +805,7 @@
         let app;
 
         // Initialize app when DOM is loaded
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             console.log('DOM loaded, initializing SICPO app...');
             app = new SICPOApp();
             window.app = app;
@@ -865,13 +868,14 @@
             event.preventDefault();
             const formData = new FormData(event.target);
             const data = Object.fromEntries(formData);
-            
+
             console.log('Form data:', data);
             alert(successMessage);
-            
+
             closeModal(modalId);
             event.target.reset();
         }
     </script>
 </body>
+
 </html>
