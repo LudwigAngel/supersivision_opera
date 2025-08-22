@@ -1,0 +1,1923 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SICPO - Módulo Constancia de Transacción</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        let app;
+
+        function showModule(moduleName) {
+            if (app && app.showModule) {
+                app.showModule(moduleName);
+            } else {
+                console.error('App not initialized, retrying...');
+                setTimeout(() => {
+                    if (app && app.showModule) {
+                        app.showModule(moduleName);
+                    }
+                }, 100);
+            }
+        }
+
+        function submitForm(event, successMessage) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            const data = Object.fromEntries(formData);
+            console.log('Form data:', data);
+            alert(successMessage);
+            event.target.reset();
+        }
+    </script>
+</head>
+
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-green-800 border-gray-200">
+        <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+            <div class="flex items-center space-x-3">
+                <i class="fas fa-certificate text-white text-2xl"></i>
+                <span class="self-center text-2xl font-semibold whitespace-nowrap text-white">SICPO - Constancia de Transacción</span>
+            </div>
+            <div class="flex items-center space-x-4">
+                <span class="text-white text-sm">Usuario: Entidad Certificadora</span>
+                <button class="text-white hover:text-gray-300">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="flex">
+        <!-- Sidebar -->
+        <aside class="w-80 bg-white shadow-md h-screen overflow-y-auto">
+            <div class="p-4">
+                <h2 class="text-lg font-semibold text-gray-800 mb-4">Procesos de Constancia de Transacción</h2>
+                
+                <!-- Proceso de Solicitud -->
+                <div class="mb-6">
+                    <h3 class="text-sm font-medium text-gray-600 mb-2 uppercase tracking-wide">Solicitud y Recepción</h3>
+                    <div class="space-y-1">
+                        <button id="btn-solicitud-ct" onclick="showModule('solicitud-ct')" 
+                                class="w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-gray-100 flex items-center">
+                            <i class="fas fa-file-plus text-green-600 mr-3"></i>
+                            <div>
+                                <div class="font-medium">HU-CT-001: Solicitud CT</div>
+                                <div class="text-xs text-gray-500">Registrar solicitud con documentos</div>
+                            </div>
+                        </button>
+                        
+                        <button id="btn-recepcion-documentos" onclick="showModule('recepcion-documentos')" 
+                                class="w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-gray-100 flex items-center">
+                            <i class="fas fa-inbox text-blue-600 mr-3"></i>
+                            <div>
+                                <div class="font-medium">HU-CT-002: Recepción Documentos</div>
+                                <div class="text-xs text-gray-500">Recibir documentación del operador</div>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Proceso de Validación -->
+                <div class="mb-6">
+                    <h3 class="text-sm font-medium text-gray-600 mb-2 uppercase tracking-wide">Validación y Análisis</h3>
+                    <div class="space-y-1">
+                        <button id="btn-validar-certificacion" onclick="showModule('validar-certificacion')" 
+                                class="w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-gray-100 flex items-center">
+                            <i class="fas fa-shield-check text-purple-600 mr-3"></i>
+                            <div>
+                                <div class="font-medium">HU-CT-003: Validar Certificación</div>
+                                <div class="text-xs text-gray-500">Corroborar certificación vigente</div>
+                            </div>
+                        </button>
+                        
+                        <button id="btn-analizar-documentacion" onclick="showModule('analizar-documentacion')" 
+                                class="w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-gray-100 flex items-center">
+                            <i class="fas fa-search text-indigo-600 mr-3"></i>
+                            <div>
+                                <div class="font-medium">HU-CT-004: Analizar Documentación</div>
+                                <div class="text-xs text-gray-500">Revisar información clave</div>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Proceso de Observaciones -->
+                <div class="mb-6">
+                    <h3 class="text-sm font-medium text-gray-600 mb-2 uppercase tracking-wide">Observaciones y Subsanación</h3>
+                    <div class="space-y-1">
+                        <button id="btn-notificar-observaciones" onclick="showModule('notificar-observaciones')" 
+                                class="w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-gray-100 flex items-center">
+                            <i class="fas fa-exclamation-triangle text-orange-600 mr-3"></i>
+                            <div>
+                                <div class="font-medium">HU-CT-005: Notificar Observaciones</div>
+                                <div class="text-xs text-gray-500">Comunicar observaciones detectadas</div>
+                            </div>
+                        </button>
+                        
+                        <button id="btn-subsanacion" onclick="showModule('subsanacion')" 
+                                class="w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-gray-100 flex items-center">
+                            <i class="fas fa-edit text-yellow-600 mr-3"></i>
+                            <div>
+                                <div class="font-medium">HU-CT-006: Subsanación</div>
+                                <div class="text-xs text-gray-500">Corregir observaciones</div>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Proceso de Emisión -->
+                <div class="mb-6">
+                    <h3 class="text-sm font-medium text-gray-600 mb-2 uppercase tracking-wide">Borrador y Emisión</h3>
+                    <div class="space-y-1">
+                        <button id="btn-borrador-ct" onclick="showModule('borrador-ct')" 
+                                class="w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-gray-100 flex items-center">
+                            <i class="fas fa-file-alt text-teal-600 mr-3"></i>
+                            <div>
+                                <div class="font-medium">HU-CT-007: Borrador CT</div>
+                                <div class="text-xs text-gray-500">Elaborar borrador para revisión</div>
+                            </div>
+                        </button>
+                        
+                        <button id="btn-revision-borrador" onclick="showModule('revision-borrador')" 
+                                class="w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-gray-100 flex items-center">
+                            <i class="fas fa-eye text-cyan-600 mr-3"></i>
+                            <div>
+                                <div class="font-medium">HU-CT-008: Revisión Borrador</div>
+                                <div class="text-xs text-gray-500">Revisar y aprobar borrador</div>
+                            </div>
+                        </button>
+                        
+                        <button id="btn-emision-ct" onclick="showModule('emision-ct')" 
+                                class="w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-gray-100 flex items-center">
+                            <i class="fas fa-certificate text-red-600 mr-3"></i>
+                            <div>
+                                <div class="font-medium">HU-CT-009: Emisión CT</div>
+                                <div class="text-xs text-gray-500">Emitir constancia oficial</div>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-6">
+            <div id="content-area">
+                <!-- Dashboard Principal -->
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <div class="text-center py-8">
+                        <i class="fas fa-certificate text-6xl text-green-600 mb-4"></i>
+                        <h1 class="text-3xl font-bold text-gray-900 mb-2">Sistema de Constancia de Transacción</h1>
+                        <p class="text-gray-600 mb-6">Gestión integral del proceso de emisión de Constancias de Transacción</p>
+                        
+                        <!-- Estadísticas Rápidas -->
+                        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+                            <div class="bg-green-50 p-4 rounded-lg">
+                                <div class="text-2xl font-bold text-green-600">24</div>
+                                <div class="text-sm text-gray-600">Solicitudes Activas</div>
+                            </div>
+                            <div class="bg-blue-50 p-4 rounded-lg">
+                                <div class="text-2xl font-bold text-blue-600">8</div>
+                                <div class="text-sm text-gray-600">En Análisis</div>
+                            </div>
+                            <div class="bg-orange-50 p-4 rounded-lg">
+                                <div class="text-2xl font-bold text-orange-600">5</div>
+                                <div class="text-sm text-gray-600">Con Observaciones</div>
+                            </div>
+                            <div class="bg-purple-50 p-4 rounded-lg">
+                                <div class="text-2xl font-bold text-purple-600">156</div>
+                                <div class="text-sm text-gray-600">CT Emitidas</div>
+                            </div>
+                        </div>
+
+                        <!-- Flujo del Proceso -->
+                        <div class="bg-white rounded-lg p-4 mb-4">
+                            <h4 class="font-semibold text-gray-800 mb-3">Flujo del Proceso de Constancia de Transacción:</h4>
+                            <div class="grid grid-cols-1 md:grid-cols-9 gap-1 text-xs">
+                                <div class="text-green-600">✅ 1. Solicitud</div>
+                                <div class="text-blue-600">✅ 2. Recepción</div>
+                                <div class="text-purple-600">✅ 3. Validación</div>
+                                <div class="text-indigo-600">✅ 4. Análisis</div>
+                                <div class="text-orange-600">✅ 5. Observaciones</div>
+                                <div class="text-yellow-600">✅ 6. Subsanación</div>
+                                <div class="text-teal-600">✅ 7. Borrador</div>
+                                <div class="text-cyan-600">✅ 8. Revisión</div>
+                                <div class="text-red-600">✅ 9. Emisión</div>
+                            </div>
+                        </div>
+
+                        <div class="mt-4 grid grid-cols-2 md:grid-cols-5 gap-2">
+                            <button onclick="showModule('solicitud-ct')" class="bg-green-600 text-white px-3 py-2 rounded text-sm hover:bg-green-700">Solicitud</button>
+                            <button onclick="showModule('analizar-documentacion')" class="bg-indigo-600 text-white px-3 py-2 rounded text-sm hover:bg-indigo-700">Análisis</button>
+                            <button onclick="showModule('borrador-ct')" class="bg-teal-600 text-white px-3 py-2 rounded text-sm hover:bg-teal-700">Borrador</button>
+                            <button onclick="showModule('emision-ct')" class="bg-red-600 text-white px-3 py-2 rounded text-sm hover:bg-red-700">Emisión</button>
+                            <button onclick="showModule('validar-certificacion')" class="bg-purple-600 text-white px-3 py-2 rounded text-sm hover:bg-purple-700">Validación</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // SICPO Constancia de Transacción - Sistema Completo
+        class ConstanciaTransaccionApp {
+            constructor() {
+                this.currentModule = null;
+                this.solicitudes = [
+                    { id: 'CT-2024-001', operador: 'Exportadora Agrícola S.A.', producto: 'Café Orgánico', estado: 'En Análisis', fecha: '2024-01-20', certificacion: 'Vigente' },
+                    { id: 'CT-2024-002', operador: 'Frutas del Valle Ltda.', producto: 'Banano Orgánico', estado: 'Con Observaciones', fecha: '2024-01-18', certificacion: 'Vigente' },
+                    { id: 'CT-2024-003', operador: 'Cacao Premium S.A.C.', producto: 'Cacao Orgánico', estado: 'Borrador Listo', fecha: '2024-01-15', certificacion: 'Vigente' }
+                ];
+                this.init();
+            }
+
+            init() {
+                console.log('Módulo Constancia de Transacción inicializado exitosamente');
+            }
+
+            showModule(moduleName) {
+                this.currentModule = moduleName;
+                const contentArea = document.getElementById('content-area');
+                
+                // Actualizar menú activo
+                document.querySelectorAll('aside button').forEach(btn => {
+                    btn.classList.remove('bg-green-100', 'text-green-700');
+                });
+                const activeBtn = document.getElementById(`btn-${moduleName}`);
+                if (activeBtn) {
+                    activeBtn.classList.add('bg-green-100', 'text-green-700');
+                }
+
+                switch (moduleName) {
+                    case 'solicitud-ct':
+                        contentArea.innerHTML = this.getSolicitudCTHTML();
+                        break;
+                    case 'recepcion-documentos':
+                        contentArea.innerHTML = this.getRecepcionDocumentosHTML();
+                        break;
+                    case 'validar-certificacion':
+                        contentArea.innerHTML = this.getValidarCertificacionHTML();
+                        break;
+                    case 'analizar-documentacion':
+                        contentArea.innerHTML = this.getAnalizarDocumentacionHTML();
+                        break;
+                    case 'notificar-observaciones':
+                        contentArea.innerHTML = this.getNotificarObservacionesHTML();
+                        break;
+                    case 'subsanacion':
+                        contentArea.innerHTML = this.getSubsanacionHTML();
+                        break;
+                    case 'borrador-ct':
+                        contentArea.innerHTML = this.getBorradorCTHTML();
+                        break;
+                    case 'revision-borrador':
+                        contentArea.innerHTML = this.getRevisionBorradorHTML();
+                        break;
+                    case 'emision-ct':
+                        contentArea.innerHTML = this.getEmisionCTHTML();
+                        break;
+                    default:
+                        contentArea.innerHTML = '<div class="text-center py-8"><p class="text-gray-500">Seleccione un proceso del menú lateral</p></div>';
+                }
+            }
+
+            // HU-CT-001: Solicitud de Constancia de Transacción
+            getSolicitudCTHTML() {
+                return `
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-2xl font-bold text-gray-900">HU-CT-001: Solicitud de Constancia de Transacción</h2>
+                        <div class="flex space-x-2">
+                            <button onclick="this.registrarSolicitud()" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700">
+                                <i class="fas fa-file-plus mr-2"></i>Nueva Solicitud
+                            </button>
+                            <button onclick="this.validarDuplicados()" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+                                <i class="fas fa-search mr-2"></i>Validar Duplicados
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4 p-4 bg-green-50 border border-green-200 rounded-lg">
+                        <h3 class="font-semibold text-green-800 mb-2">CA-CT-01.1, CA-CT-01.2 & CA-CT-01.3:</h3>
+                        <p class="text-green-700 text-sm">El sistema permite registrar solicitudes con documentos requeridos, valida duplicados y genera acuse de recepción automático.</p>
+                    </div>
+
+                    <div class="space-y-6">
+                        <!-- Formulario de Nueva Solicitud -->
+                        <div class="border rounded-lg p-4">
+                            <h3 class="text-lg font-semibold mb-3">Registro de Nueva Solicitud CT</h3>
+                            <form onsubmit="submitForm(event, 'Solicitud CT registrada exitosamente. Acuse de recepción generado.')" class="space-y-4">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Código de Solicitud</label>
+                                        <input type="text" name="codigo_solicitud" value="CT-2024-004" readonly class="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Fecha de Solicitud</label>
+                                        <input type="date" name="fecha_solicitud" required class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                                    </div>
+                                </div>
+
+                                <!-- Información del Operador -->
+                                <div class="border-t pt-4">
+                                    <h4 class="text-md font-semibold mb-3">Información del Operador</h4>
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-2">Nombre del Operador</label>
+                                            <input type="text" name="nombre_operador" required class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Razón social completa">
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-2">RUC</label>
+                                            <input type="text" name="ruc_operador" required class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="20123456789">
+                                        </div>
+                                    </div>
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-2">Código de Certificación</label>
+                                            <input type="text" name="codigo_certificacion" required class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="CERT-ORG-2024-001">
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-2">Entidad Certificadora</label>
+                                            <select name="entidad_certificadora" required class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                                                <option value="">Seleccionar entidad...</option>
+                                                <option value="SENASA">SENASA</option>
+                                                <option value="CONTROL_UNION">Control Union</option>
+                                                <option value="BCS_OKO">BCS Öko-Garantie</option>
+                                                <option value="ECOCERT">Ecocert Perú</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Información del Producto -->
+                                <div class="border-t pt-4">
+                                    <h4 class="text-md font-semibold mb-3">Información del Producto</h4>
+                                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-2">Tipo de Producto</label>
+                                            <select name="tipo_producto" required class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                                                <option value="">Seleccionar producto...</option>
+                                                <option value="cafe_organico">Café Orgánico</option>
+                                                <option value="cacao_organico">Cacao Orgánico</option>
+                                                <option value="banano_organico">Banano Orgánico</option>
+                                                <option value="quinua_organica">Quinua Orgánica</option>
+                                                <option value="otros">Otros</option>
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-2">Cantidad (TM)</label>
+                                            <input type="number" name="cantidad" step="0.01" required class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="0.00">
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-2">Estado del Producto</label>
+                                            <select name="estado_producto" required class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                                                <option value="">Seleccionar estado...</option>
+                                                <option value="fresco">Fresco</option>
+                                                <option value="procesado">Procesado</option>
+                                                <option value="seco">Seco</option>
+                                                <option value="congelado">Congelado</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-2">Procedencia</label>
+                                            <input type="text" name="procedencia" required class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Región, provincia, distrito">
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-2">Período de Cosecha</label>
+                                            <input type="text" name="periodo_cosecha" required class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Ej: Enero - Marzo 2024">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Documentos Requeridos -->
+                                <div class="border-t pt-4">
+                                    <h4 class="text-md font-semibold mb-3">Documentos de Sustento Requeridos</h4>
+                                    <div class="space-y-3">
+                                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                            <div class="flex items-center">
+                                                <input type="checkbox" name="documentos[]" value="factura" required class="mr-3">
+                                                <span class="text-sm font-medium">Factura de Venta</span>
+                                            </div>
+                                            <input type="file" name="archivo_factura" accept=".pdf,.jpg,.png" class="text-sm">
+                                        </div>
+                                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                            <div class="flex items-center">
+                                                <input type="checkbox" name="documentos[]" value="guia_remision" required class="mr-3">
+                                                <span class="text-sm font-medium">Guía de Remisión</span>
+                                            </div>
+                                            <input type="file" name="archivo_guia" accept=".pdf,.jpg,.png" class="text-sm">
+                                        </div>
+                                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                            <div class="flex items-center">
+                                                <input type="checkbox" name="documentos[]" value="lista_empaque" required class="mr-3">
+                                                <span class="text-sm font-medium">Lista de Empaque</span>
+                                            </div>
+                                            <input type="file" name="archivo_lista" accept=".pdf,.jpg,.png" class="text-sm">
+                                        </div>
+                                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                            <div class="flex items-center">
+                                                <input type="checkbox" name="documentos[]" value="certificado_organico" required class="mr-3">
+                                                <span class="text-sm font-medium">Certificado Orgánico Vigente</span>
+                                            </div>
+                                            <input type="file" name="archivo_certificado" accept=".pdf" class="text-sm">
+                                        </div>
+                                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                            <div class="flex items-center">
+                                                <input type="checkbox" name="documentos[]" value="analisis_residuos" class="mr-3">
+                                                <span class="text-sm font-medium">Análisis de Residuos (opcional)</span>
+                                            </div>
+                                            <input type="file" name="archivo_analisis" accept=".pdf" class="text-sm">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Observaciones Adicionales</label>
+                                    <textarea name="observaciones" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Información adicional relevante..."></textarea>
+                                </div>
+
+                                <div class="flex justify-end space-x-2">
+                                    <button type="button" class="bg-gray-500 text-white px-6 py-2 rounded-lg hover:bg-gray-600">Guardar Borrador</button>
+                                    <button type="submit" class="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700">Registrar Solicitud</button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- Lista de Solicitudes Registradas -->
+                        <div class="border rounded-lg p-4">
+                            <h3 class="text-lg font-semibold mb-3">Solicitudes CT Registradas</h3>
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full divide-y divide-gray-200">
+                                    <thead class="bg-gray-50">
+                                        <tr>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Código</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Operador</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Producto</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Estado</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Fecha</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="bg-white divide-y divide-gray-200">
+                                        ${this.solicitudes.map(sol => `
+                                            <tr>
+                                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${sol.id}</td>
+                                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${sol.operador}</td>
+                                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${sol.producto}</td>
+                                                <td class="px-6 py-4 whitespace-nowrap">
+                                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${this.getEstadoClass(sol.estado)}">${sol.estado}</span>
+                                                </td>
+                                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${sol.fecha}</td>
+                                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                                    <button class="text-green-600 hover:text-green-900 mr-3">Ver</button>
+                                                    <button class="text-blue-600 hover:text-blue-900">Procesar</button>
+                                                </td>
+                                            </tr>
+                                        `).join('')}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                `;
+            }
+
+            // HU-CT-002: Recepción de Documentos
+            getRecepcionDocumentosHTML() {
+                return `
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-2xl font-bold text-gray-900">HU-CT-002: Recepción de Documentos</h2>
+                        <button onclick="this.procesarRecepcion()" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+                            <i class="fas fa-inbox mr-2"></i>Procesar Recepción
+                        </button>
+                    </div>
+                    
+                    <div class="mb-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                        <h3 class="font-semibold text-blue-800 mb-2">CA-CT-02.1:</h3>
+                        <p class="text-blue-700 text-sm">El sistema almacena documentos en el repositorio documental y los vincula automáticamente al trámite.</p>
+                    </div>
+
+                    <div class="space-y-6">
+                        <!-- Solicitudes Pendientes de Recepción -->
+                        <div class="border rounded-lg p-4">
+                            <h3 class="text-lg font-semibold mb-3">Solicitudes Pendientes de Recepción</h3>
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full divide-y divide-gray-200">
+                                    <thead class="bg-gray-50">
+                                        <tr>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Código</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Operador</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Documentos</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Fecha Envío</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Estado</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="bg-white divide-y divide-gray-200">
+                                        <tr>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">CT-2024-004</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Agroindustrial Los Andes S.A.</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">5 archivos</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2024-01-22</td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Pendiente Recepción</span>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                                <button class="text-blue-600 hover:text-blue-900 mr-3">Recibir</button>
+                                                <button class="text-gray-600 hover:text-gray-900">Ver Documentos</button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Formulario de Recepción -->
+                        <div class="border rounded-lg p-4">
+                            <h3 class="text-lg font-semibold mb-3">Procesamiento de Recepción Documental</h3>
+                            <form onsubmit="submitForm(event, 'Documentos recibidos y almacenados en repositorio exitosamente')" class="space-y-4">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Solicitud CT</label>
+                                        <select name="solicitud_ct" required class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                                            <option value="">Seleccionar solicitud...</option>
+                                            <option value="CT-2024-004">CT-2024-004 - Agroindustrial Los Andes S.A.</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Fecha de Recepción</label>
+                                        <input type="datetime-local" name="fecha_recepcion" required class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                                    </div>
+                                </div>
+
+                                <!-- Verificación de Documentos -->
+                                <div class="border-t pt-4">
+                                    <h4 class="text-md font-semibold mb-3">Verificación de Documentos Recibidos</h4>
+                                    <div class="space-y-3">
+                                        <div class="flex items-center justify-between p-3 bg-green-50 rounded-lg">
+                                            <div class="flex items-center">
+                                                <i class="fas fa-check-circle text-green-600 mr-3"></i>
+                                                <span class="text-sm font-medium">Factura de Venta</span>
+                                            </div>
+                                            <div class="flex items-center space-x-2">
+                                                <span class="text-xs text-gray-500">factura_001.pdf (2.3 MB)</span>
+                                                <button type="button" class="text-blue-600 hover:text-blue-800 text-xs">Ver</button>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center justify-between p-3 bg-green-50 rounded-lg">
+                                            <div class="flex items-center">
+                                                <i class="fas fa-check-circle text-green-600 mr-3"></i>
+                                                <span class="text-sm font-medium">Guía de Remisión</span>
+                                            </div>
+                                            <div class="flex items-center space-x-2">
+                                                <span class="text-xs text-gray-500">guia_remision_001.pdf (1.8 MB)</span>
+                                                <button type="button" class="text-blue-600 hover:text-blue-800 text-xs">Ver</button>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center justify-between p-3 bg-green-50 rounded-lg">
+                                            <div class="flex items-center">
+                                                <i class="fas fa-check-circle text-green-600 mr-3"></i>
+                                                <span class="text-sm font-medium">Lista de Empaque</span>
+                                            </div>
+                                            <div class="flex items-center space-x-2">
+                                                <span class="text-xs text-gray-500">lista_empaque_001.pdf (1.2 MB)</span>
+                                                <button type="button" class="text-blue-600 hover:text-blue-800 text-xs">Ver</button>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center justify-between p-3 bg-green-50 rounded-lg">
+                                            <div class="flex items-center">
+                                                <i class="fas fa-check-circle text-green-600 mr-3"></i>
+                                                <span class="text-sm font-medium">Certificado Orgánico</span>
+                                            </div>
+                                            <div class="flex items-center space-x-2">
+                                                <span class="text-xs text-gray-500">certificado_organico_001.pdf (3.1 MB)</span>
+                                                <button type="button" class="text-blue-600 hover:text-blue-800 text-xs">Ver</button>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center justify-between p-3 bg-yellow-50 rounded-lg">
+                                            <div class="flex items-center">
+                                                <i class="fas fa-exclamation-triangle text-yellow-600 mr-3"></i>
+                                                <span class="text-sm font-medium">Análisis de Residuos</span>
+                                            </div>
+                                            <div class="flex items-center space-x-2">
+                                                <span class="text-xs text-gray-500">No recibido</span>
+                                                <select name="accion_faltante" class="text-xs border rounded px-2 py-1">
+                                                    <option value="opcional">Marcar como Opcional</option>
+                                                    <option value="solicitar">Solicitar al Operador</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Información del Repositorio -->
+                                <div class="border-t pt-4">
+                                    <h4 class="text-md font-semibold mb-3">Almacenamiento en Repositorio Documental</h4>
+                                    <div class="bg-gray-50 p-4 rounded-lg">
+                                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                            <div>
+                                                <label class="block text-sm font-medium text-gray-700 mb-1">Carpeta de Destino</label>
+                                                <input type="text" name="carpeta_destino" value="/CT/2024/CT-2024-004/" readonly class="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-100 text-sm">
+                                            </div>
+                                            <div>
+                                                <label class="block text-sm font-medium text-gray-700 mb-1">Servidor</label>
+                                                <input type="text" name="servidor" value="SICPO-DOC-SERVER-01" readonly class="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-100 text-sm">
+                                            </div>
+                                            <div>
+                                                <label class="block text-sm font-medium text-gray-700 mb-1">Backup</label>
+                                                <input type="text" name="backup" value="SICPO-BACKUP-SERVER" readonly class="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-100 text-sm">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Observaciones de Recepción</label>
+                                    <textarea name="observaciones_recepcion" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Observaciones sobre la recepción de documentos..."></textarea>
+                                </div>
+
+                                <div class="flex justify-end space-x-2">
+                                    <button type="button" class="bg-gray-500 text-white px-6 py-2 rounded-lg hover:bg-gray-600">Rechazar Recepción</button>
+                                    <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">Confirmar Recepción</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                `;
+            }       
+     // HU-CT-003: Validar Certificación
+            getValidarCertificacionHTML() {
+                return `
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-2xl font-bold text-gray-900">HU-CT-003: Validar Certificación</h2>
+                        <button onclick="this.validarCertificacion()" class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700">
+                            <i class="fas fa-shield-check mr-2"></i>Validar Automáticamente
+                        </button>
+                    </div>
+                    
+                    <div class="mb-4 p-4 bg-purple-50 border border-purple-200 rounded-lg">
+                        <h3 class="font-semibold text-purple-800 mb-2">CA-CT-03.1:</h3>
+                        <p class="text-purple-700 text-sm">El sistema valida automáticamente la vigencia de la certificación del operador.</p>
+                    </div>
+
+                    <div class="space-y-6">
+                        <div class="border rounded-lg p-4">
+                            <h3 class="text-lg font-semibold mb-3">Operadores Pendientes de Validación</h3>
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full divide-y divide-gray-200">
+                                    <thead class="bg-gray-50">
+                                        <tr>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Solicitud</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Operador</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Certificación</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Vigencia</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Estado</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="bg-white divide-y divide-gray-200">
+                                        <tr>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">CT-2024-004</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Agroindustrial Los Andes S.A.</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">CERT-ORG-2024-001</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">31/12/2024</td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Pendiente Validación</span>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                                <button class="text-purple-600 hover:text-purple-900 mr-3">Validar</button>
+                                                <button class="text-gray-600 hover:text-gray-900">Ver Certificado</button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="border rounded-lg p-4">
+                            <h3 class="text-lg font-semibold mb-3">Validación de Certificación Orgánica</h3>
+                            <form onsubmit="submitForm(event, 'Certificación validada exitosamente')" class="space-y-4">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Solicitud CT</label>
+                                        <select name="solicitud_validar" required class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                                            <option value="">Seleccionar solicitud...</option>
+                                            <option value="CT-2024-004">CT-2024-004 - Agroindustrial Los Andes S.A.</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Código de Certificación</label>
+                                        <input type="text" name="codigo_cert" value="CERT-ORG-2024-001" readonly class="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50">
+                                    </div>
+                                </div>
+
+                                <div class="bg-green-50 p-4 rounded-lg">
+                                    <h4 class="font-semibold text-green-800 mb-3">Resultado de Validación Automática</h4>
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-1">Estado de Certificación</label>
+                                            <div class="flex items-center">
+                                                <i class="fas fa-check-circle text-green-600 mr-2"></i>
+                                                <span class="text-green-700 font-medium">VIGENTE</span>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-1">Fecha de Vencimiento</label>
+                                            <span class="text-gray-900">31 de Diciembre de 2024</span>
+                                        </div>
+                                    </div>
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-3">
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-1">Entidad Certificadora</label>
+                                            <span class="text-gray-900">SENASA - Servicio Nacional de Sanidad Agraria</span>
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-1">Alcance</label>
+                                            <span class="text-gray-900">Producción y procesamiento de café orgánico</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Resultado de Validación</label>
+                                    <select name="resultado_validacion" required class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                                        <option value="">Seleccionar resultado...</option>
+                                        <option value="vigente">Certificación Vigente</option>
+                                        <option value="vencida">Certificación Vencida</option>
+                                        <option value="suspendida">Certificación Suspendida</option>
+                                        <option value="no_encontrada">Certificación No Encontrada</option>
+                                    </select>
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Observaciones de Validación</label>
+                                    <textarea name="observaciones_validacion" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Observaciones sobre la validación..."></textarea>
+                                </div>
+
+                                <div class="flex justify-end">
+                                    <button type="submit" class="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700">Confirmar Validación</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                `;
+            }    
+        // HU-CT-004: Analizar Documentación
+            getAnalizarDocumentacionHTML() {
+                return `
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-2xl font-bold text-gray-900">HU-CT-004: Analizar Documentación</h2>
+                        <div class="flex space-x-2">
+                            <button onclick="this.analizarDocumentos()" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700">
+                                <i class="fas fa-search mr-2"></i>Analizar Documentos
+                            </button>
+                            <button onclick="this.marcarCompleto()" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700">
+                                <i class="fas fa-check mr-2"></i>Marcar Completo
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4 p-4 bg-indigo-50 border border-indigo-200 rounded-lg">
+                        <h3 class="font-semibold text-indigo-800 mb-2">CA-CT-04.1 & CA-CT-04.2:</h3>
+                        <p class="text-indigo-700 text-sm">El sistema permite marcar documentos como completos o con observaciones y muestra información clave del producto.</p>
+                    </div>
+
+                    <div class="space-y-6">
+                        <div class="border rounded-lg p-4">
+                            <h3 class="text-lg font-semibold mb-3">Solicitudes Listas para Análisis</h3>
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full divide-y divide-gray-200">
+                                    <thead class="bg-gray-50">
+                                        <tr>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Solicitud</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Operador</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Producto</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Documentos</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Estado</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="bg-white divide-y divide-gray-200">
+                                        <tr>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">CT-2024-004</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Agroindustrial Los Andes S.A.</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Café Orgánico</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">4/5 recibidos</td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Listo para Análisis</span>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                                <button class="text-indigo-600 hover:text-indigo-900 mr-3">Analizar</button>
+                                                <button class="text-gray-600 hover:text-gray-900">Ver Documentos</button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="border rounded-lg p-4">
+                            <h3 class="text-lg font-semibold mb-3">Análisis Detallado de Documentación</h3>
+                            <form onsubmit="submitForm(event, 'Análisis de documentación completado exitosamente')" class="space-y-4">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Solicitud a Analizar</label>
+                                        <select name="solicitud_analizar" required class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                                            <option value="">Seleccionar solicitud...</option>
+                                            <option value="CT-2024-004">CT-2024-004 - Agroindustrial Los Andes S.A.</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Analista Responsable</label>
+                                        <input type="text" name="analista" value="Lic. María González - Especialista CT" readonly class="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50">
+                                    </div>
+                                </div>
+
+                                <!-- Información Clave del Producto -->
+                                <div class="border-t pt-4">
+                                    <h4 class="text-md font-semibold mb-3">Información Clave del Producto</h4>
+                                    <div class="bg-gray-50 p-4 rounded-lg">
+                                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                            <div>
+                                                <label class="block text-sm font-medium text-gray-700 mb-1">Producto</label>
+                                                <span class="text-gray-900 font-medium">Café Orgánico</span>
+                                            </div>
+                                            <div>
+                                                <label class="block text-sm font-medium text-gray-700 mb-1">Cantidad</label>
+                                                <span class="text-gray-900 font-medium">25.5 TM</span>
+                                            </div>
+                                            <div>
+                                                <label class="block text-sm font-medium text-gray-700 mb-1">Estado</label>
+                                                <span class="text-gray-900 font-medium">Procesado</span>
+                                            </div>
+                                        </div>
+                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-3">
+                                            <div>
+                                                <label class="block text-sm font-medium text-gray-700 mb-1">Procedencia</label>
+                                                <span class="text-gray-900 font-medium">Cusco, La Convención, Echarati</span>
+                                            </div>
+                                            <div>
+                                                <label class="block text-sm font-medium text-gray-700 mb-1">Cosecha</label>
+                                                <span class="text-gray-900 font-medium">Abril - Agosto 2023</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Análisis de Documentos -->
+                                <div class="border-t pt-4">
+                                    <h4 class="text-md font-semibold mb-3">Análisis de Documentos</h4>
+                                    <div class="space-y-4">
+                                        <div class="border rounded-lg p-4">
+                                            <div class="flex items-center justify-between mb-3">
+                                                <h5 class="font-medium">Factura de Venta</h5>
+                                                <div class="flex items-center space-x-2">
+                                                    <button type="button" class="text-blue-600 hover:text-blue-800 text-sm">Ver Documento</button>
+                                                </div>
+                                            </div>
+                                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                <div>
+                                                    <label class="block text-sm font-medium text-gray-700 mb-1">Estado del Documento</label>
+                                                    <select name="estado_factura" required class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                                                        <option value="">Seleccionar estado...</option>
+                                                        <option value="completo">Completo</option>
+                                                        <option value="con_observaciones">Con Observaciones</option>
+                                                        <option value="incompleto">Incompleto</option>
+                                                    </select>
+                                                </div>
+                                                <div>
+                                                    <label class="block text-sm font-medium text-gray-700 mb-1">Observaciones</label>
+                                                    <textarea name="obs_factura" rows="2" class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="border rounded-lg p-4">
+                                            <div class="flex items-center justify-between mb-3">
+                                                <h5 class="font-medium">Guía de Remisión</h5>
+                                                <div class="flex items-center space-x-2">
+                                                    <button type="button" class="text-blue-600 hover:text-blue-800 text-sm">Ver Documento</button>
+                                                </div>
+                                            </div>
+                                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                <div>
+                                                    <label class="block text-sm font-medium text-gray-700 mb-1">Estado del Documento</label>
+                                                    <select name="estado_guia" required class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                                                        <option value="">Seleccionar estado...</option>
+                                                        <option value="completo">Completo</option>
+                                                        <option value="con_observaciones">Con Observaciones</option>
+                                                        <option value="incompleto">Incompleto</option>
+                                                    </select>
+                                                </div>
+                                                <div>
+                                                    <label class="block text-sm font-medium text-gray-700 mb-1">Observaciones</label>
+                                                    <textarea name="obs_guia" rows="2" class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="border rounded-lg p-4">
+                                            <div class="flex items-center justify-between mb-3">
+                                                <h5 class="font-medium">Lista de Empaque</h5>
+                                                <div class="flex items-center space-x-2">
+                                                    <button type="button" class="text-blue-600 hover:text-blue-800 text-sm">Ver Documento</button>
+                                                </div>
+                                            </div>
+                                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                <div>
+                                                    <label class="block text-sm font-medium text-gray-700 mb-1">Estado del Documento</label>
+                                                    <select name="estado_lista" required class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                                                        <option value="">Seleccionar estado...</option>
+                                                        <option value="completo">Completo</option>
+                                                        <option value="con_observaciones">Con Observaciones</option>
+                                                        <option value="incompleto">Incompleto</option>
+                                                    </select>
+                                                </div>
+                                                <div>
+                                                    <label class="block text-sm font-medium text-gray-700 mb-1">Observaciones</label>
+                                                    <textarea name="obs_lista" rows="2" class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="border rounded-lg p-4">
+                                            <div class="flex items-center justify-between mb-3">
+                                                <h5 class="font-medium">Certificado Orgánico</h5>
+                                                <div class="flex items-center space-x-2">
+                                                    <button type="button" class="text-blue-600 hover:text-blue-800 text-sm">Ver Documento</button>
+                                                </div>
+                                            </div>
+                                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                <div>
+                                                    <label class="block text-sm font-medium text-gray-700 mb-1">Estado del Documento</label>
+                                                    <select name="estado_certificado" required class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                                                        <option value="">Seleccionar estado...</option>
+                                                        <option value="completo">Completo</option>
+                                                        <option value="con_observaciones">Con Observaciones</option>
+                                                        <option value="incompleto">Incompleto</option>
+                                                    </select>
+                                                </div>
+                                                <div>
+                                                    <label class="block text-sm font-medium text-gray-700 mb-1">Observaciones</label>
+                                                    <textarea name="obs_certificado" rows="2" class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Resultado General del Análisis</label>
+                                        <select name="resultado_analisis" required class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                                            <option value="">Seleccionar resultado...</option>
+                                            <option value="completo">Documentación Completa</option>
+                                            <option value="con_observaciones">Con Observaciones Menores</option>
+                                            <option value="requiere_subsanacion">Requiere Subsanación</option>
+                                            <option value="incompleto">Documentación Incompleta</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Fecha de Análisis</label>
+                                        <input type="date" name="fecha_analisis" required class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Observaciones Generales</label>
+                                    <textarea name="observaciones_generales" rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Observaciones generales del análisis documental..."></textarea>
+                                </div>
+
+                                <div class="flex justify-end space-x-2">
+                                    <button type="button" class="bg-gray-500 text-white px-6 py-2 rounded-lg hover:bg-gray-600">Guardar Borrador</button>
+                                    <button type="submit" class="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700">Finalizar Análisis</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                `;
+            }    
+        // HU-CT-005: Notificar Observaciones
+            getNotificarObservacionesHTML() {
+                return `
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-2xl font-bold text-gray-900">HU-CT-005: Notificar Observaciones</h2>
+                        <button onclick="this.enviarNotificacion()" class="bg-orange-600 text-white px-4 py-2 rounded-lg hover:bg-orange-700">
+                            <i class="fas fa-paper-plane mr-2"></i>Enviar Notificación
+                        </button>
+                    </div>
+                    
+                    <div class="mb-4 p-4 bg-orange-50 border border-orange-200 rounded-lg">
+                        <h3 class="font-semibold text-orange-800 mb-2">CA-CT-05.1:</h3>
+                        <p class="text-orange-700 text-sm">El sistema envía notificación automática al operador con detalle de observaciones detectadas.</p>
+                    </div>
+
+                    <div class="space-y-6">
+                        <div class="border rounded-lg p-4">
+                            <h3 class="text-lg font-semibold mb-3">Solicitudes con Observaciones</h3>
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full divide-y divide-gray-200">
+                                    <thead class="bg-gray-50">
+                                        <tr>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Solicitud</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Operador</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Observaciones</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Analista</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Estado</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="bg-white divide-y divide-gray-200">
+                                        <tr>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">CT-2024-004</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Agroindustrial Los Andes S.A.</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">3 observaciones</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Lic. María González</td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-orange-100 text-orange-800">Pendiente Notificación</span>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                                <button class="text-orange-600 hover:text-orange-900 mr-3">Notificar</button>
+                                                <button class="text-gray-600 hover:text-gray-900">Ver Observaciones</button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="border rounded-lg p-4">
+                            <h3 class="text-lg font-semibold mb-3">Notificación de Observaciones</h3>
+                            <form onsubmit="submitForm(event, 'Observaciones notificadas automáticamente al operador')" class="space-y-4">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Solicitud CT</label>
+                                        <select name="solicitud_notificar" required class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                                            <option value="">Seleccionar solicitud...</option>
+                                            <option value="CT-2024-004">CT-2024-004 - Agroindustrial Los Andes S.A.</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Número de Notificación</label>
+                                        <input type="text" name="numero_notificacion" value="NOT-CT-2024-004" readonly class="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50">
+                                    </div>
+                                </div>
+
+                                <!-- Detalle de Observaciones -->
+                                <div class="border-t pt-4">
+                                    <h4 class="text-md font-semibold mb-3">Detalle de Observaciones Detectadas</h4>
+                                    <div class="space-y-4">
+                                        <div class="bg-red-50 p-4 rounded-lg border border-red-200">
+                                            <h5 class="font-medium text-red-800 mb-2">Observación 1: Factura de Venta</h5>
+                                            <p class="text-red-700 text-sm mb-2">La factura no incluye el detalle específico del tipo de café orgánico (variedad, grado de procesamiento).</p>
+                                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                <div>
+                                                    <label class="block text-sm font-medium text-gray-700 mb-1">Tipo de Observación</label>
+                                                    <select name="tipo_obs_1" class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm">
+                                                        <option value="menor">Observación Menor</option>
+                                                        <option value="mayor">Observación Mayor</option>
+                                                        <option value="critica">Observación Crítica</option>
+                                                    </select>
+                                                </div>
+                                                <div>
+                                                    <label class="block text-sm font-medium text-gray-700 mb-1">Plazo para Subsanar</label>
+                                                    <select name="plazo_obs_1" class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm">
+                                                        <option value="3">3 días hábiles</option>
+                                                        <option value="5">5 días hábiles</option>
+                                                        <option value="10">10 días hábiles</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                                            <h5 class="font-medium text-yellow-800 mb-2">Observación 2: Lista de Empaque</h5>
+                                            <p class="text-yellow-700 text-sm mb-2">Falta información sobre el peso neto y bruto de cada lote identificado.</p>
+                                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                <div>
+                                                    <label class="block text-sm font-medium text-gray-700 mb-1">Tipo de Observación</label>
+                                                    <select name="tipo_obs_2" class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm">
+                                                        <option value="menor">Observación Menor</option>
+                                                        <option value="mayor">Observación Mayor</option>
+                                                        <option value="critica">Observación Crítica</option>
+                                                    </select>
+                                                </div>
+                                                <div>
+                                                    <label class="block text-sm font-medium text-gray-700 mb-1">Plazo para Subsanar</label>
+                                                    <select name="plazo_obs_2" class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm">
+                                                        <option value="3">3 días hábiles</option>
+                                                        <option value="5">5 días hábiles</option>
+                                                        <option value="10">10 días hábiles</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="bg-orange-50 p-4 rounded-lg border border-orange-200">
+                                            <h5 class="font-medium text-orange-800 mb-2">Observación 3: Certificado Orgánico</h5>
+                                            <p class="text-orange-700 text-sm mb-2">El certificado adjunto no corresponde al período de cosecha declarado en la solicitud.</p>
+                                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                <div>
+                                                    <label class="block text-sm font-medium text-gray-700 mb-1">Tipo de Observación</label>
+                                                    <select name="tipo_obs_3" class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm">
+                                                        <option value="menor">Observación Menor</option>
+                                                        <option value="mayor" selected>Observación Mayor</option>
+                                                        <option value="critica">Observación Crítica</option>
+                                                    </select>
+                                                </div>
+                                                <div>
+                                                    <label class="block text-sm font-medium text-gray-700 mb-1">Plazo para Subsanar</label>
+                                                    <select name="plazo_obs_3" class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm">
+                                                        <option value="3">3 días hábiles</option>
+                                                        <option value="5" selected>5 días hábiles</option>
+                                                        <option value="10">10 días hábiles</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Medio de Notificación</label>
+                                        <select name="medio_notificacion" required class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                                            <option value="">Seleccionar medio...</option>
+                                            <option value="correo_electronico">Correo Electrónico</option>
+                                            <option value="plataforma_sicpo">Plataforma SICPO</option>
+                                            <option value="ambos">Ambos Medios</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Plazo General</label>
+                                        <select name="plazo_general" required class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                                            <option value="">Seleccionar plazo...</option>
+                                            <option value="5">5 días hábiles</option>
+                                            <option value="10">10 días hábiles</option>
+                                            <option value="15">15 días hábiles</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Mensaje Adicional</label>
+                                    <textarea name="mensaje_adicional" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Mensaje adicional para el operador..."></textarea>
+                                </div>
+
+                                <div class="flex justify-end space-x-2">
+                                    <button type="button" class="bg-gray-500 text-white px-6 py-2 rounded-lg hover:bg-gray-600">Vista Previa</button>
+                                    <button type="submit" class="bg-orange-600 text-white px-6 py-2 rounded-lg hover:bg-orange-700">Enviar Notificación</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                `;
+            }
+
+            // HU-CT-006: Subsanación
+            getSubsanacionHTML() {
+                return `
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-2xl font-bold text-gray-900">HU-CT-006: Subsanación de Observaciones</h2>
+                        <button onclick="this.procesarSubsanacion()" class="bg-yellow-600 text-white px-4 py-2 rounded-lg hover:bg-yellow-700">
+                            <i class="fas fa-edit mr-2"></i>Procesar Subsanación
+                        </button>
+                    </div>
+                    
+                    <div class="mb-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                        <h3 class="font-semibold text-yellow-800 mb-2">CA-CT-06.1:</h3>
+                        <p class="text-yellow-700 text-sm">El operador puede adjuntar nuevamente documentos para subsanar las observaciones detectadas.</p>
+                    </div>
+
+                    <div class="space-y-6">
+                        <div class="border rounded-lg p-4">
+                            <h3 class="text-lg font-semibold mb-3">Solicitudes con Subsanación Pendiente</h3>
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full divide-y divide-gray-200">
+                                    <thead class="bg-gray-50">
+                                        <tr>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Solicitud</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Operador</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Observaciones</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Plazo</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Estado</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="bg-white divide-y divide-gray-200">
+                                        <tr>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">CT-2024-004</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Agroindustrial Los Andes S.A.</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">3 observaciones</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">3 días restantes</td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Subsanación Recibida</span>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                                <button class="text-yellow-600 hover:text-yellow-900 mr-3">Revisar</button>
+                                                <button class="text-gray-600 hover:text-gray-900">Ver Documentos</button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="border rounded-lg p-4">
+                            <h3 class="text-lg font-semibold mb-3">Procesamiento de Subsanación</h3>
+                            <form onsubmit="submitForm(event, 'Subsanación procesada exitosamente')" class="space-y-4">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Solicitud CT</label>
+                                        <select name="solicitud_subsanar" required class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                                            <option value="">Seleccionar solicitud...</option>
+                                            <option value="CT-2024-004">CT-2024-004 - Agroindustrial Los Andes S.A.</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Fecha de Subsanación</label>
+                                        <input type="date" name="fecha_subsanacion" required class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                                    </div>
+                                </div>
+
+                                <!-- Revisión de Subsanación -->
+                                <div class="border-t pt-4">
+                                    <h4 class="text-md font-semibold mb-3">Revisión de Documentos Subsanados</h4>
+                                    <div class="space-y-4">
+                                        <div class="bg-green-50 p-4 rounded-lg border border-green-200">
+                                            <h5 class="font-medium text-green-800 mb-2">Observación 1: Factura de Venta - SUBSANADA</h5>
+                                            <p class="text-green-700 text-sm mb-2">Nueva factura adjuntada con detalle específico del tipo de café orgánico.</p>
+                                            <div class="flex items-center justify-between">
+                                                <div class="flex items-center">
+                                                    <i class="fas fa-file-pdf text-red-600 mr-2"></i>
+                                                    <span class="text-sm">factura_corregida_001.pdf (2.8 MB)</span>
+                                                </div>
+                                                <div class="flex items-center space-x-2">
+                                                    <button type="button" class="text-blue-600 hover:text-blue-800 text-sm">Ver Documento</button>
+                                                    <select name="estado_subsanacion_1" class="text-sm border rounded px-2 py-1">
+                                                        <option value="aceptada">Subsanación Aceptada</option>
+                                                        <option value="rechazada">Subsanación Rechazada</option>
+                                                        <option value="parcial">Subsanación Parcial</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="bg-green-50 p-4 rounded-lg border border-green-200">
+                                            <h5 class="font-medium text-green-800 mb-2">Observación 2: Lista de Empaque - SUBSANADA</h5>
+                                            <p class="text-green-700 text-sm mb-2">Lista actualizada con información completa de peso neto y bruto.</p>
+                                            <div class="flex items-center justify-between">
+                                                <div class="flex items-center">
+                                                    <i class="fas fa-file-pdf text-red-600 mr-2"></i>
+                                                    <span class="text-sm">lista_empaque_corregida_001.pdf (1.5 MB)</span>
+                                                </div>
+                                                <div class="flex items-center space-x-2">
+                                                    <button type="button" class="text-blue-600 hover:text-blue-800 text-sm">Ver Documento</button>
+                                                    <select name="estado_subsanacion_2" class="text-sm border rounded px-2 py-1">
+                                                        <option value="aceptada">Subsanación Aceptada</option>
+                                                        <option value="rechazada">Subsanación Rechazada</option>
+                                                        <option value="parcial">Subsanación Parcial</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                                            <h5 class="font-medium text-yellow-800 mb-2">Observación 3: Certificado Orgánico - PENDIENTE</h5>
+                                            <p class="text-yellow-700 text-sm mb-2">Aún no se ha recibido el certificado correspondiente al período correcto.</p>
+                                            <div class="flex items-center justify-between">
+                                                <div class="flex items-center">
+                                                    <i class="fas fa-exclamation-triangle text-yellow-600 mr-2"></i>
+                                                    <span class="text-sm">Documento no recibido</span>
+                                                </div>
+                                                <div class="flex items-center space-x-2">
+                                                    <select name="accion_pendiente" class="text-sm border rounded px-2 py-1">
+                                                        <option value="esperar">Esperar Documento</option>
+                                                        <option value="contactar">Contactar Operador</option>
+                                                        <option value="rechazar">Rechazar Solicitud</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Estado General de Subsanación</label>
+                                        <select name="estado_general_subsanacion" required class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                                            <option value="">Seleccionar estado...</option>
+                                            <option value="completa">Subsanación Completa</option>
+                                            <option value="parcial">Subsanación Parcial</option>
+                                            <option value="insuficiente">Subsanación Insuficiente</option>
+                                            <option value="rechazada">Subsanación Rechazada</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Próxima Acción</label>
+                                        <select name="proxima_accion" required class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                                            <option value="">Seleccionar acción...</option>
+                                            <option value="continuar_proceso">Continuar con el Proceso</option>
+                                            <option value="nueva_notificacion">Nueva Notificación</option>
+                                            <option value="rechazar_solicitud">Rechazar Solicitud</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Observaciones de la Subsanación</label>
+                                    <textarea name="observaciones_subsanacion" rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Observaciones sobre la subsanación recibida..."></textarea>
+                                </div>
+
+                                <div class="flex justify-end space-x-2">
+                                    <button type="button" class="bg-gray-500 text-white px-6 py-2 rounded-lg hover:bg-gray-600">Solicitar Más Información</button>
+                                    <button type="submit" class="bg-yellow-600 text-white px-6 py-2 rounded-lg hover:bg-yellow-700">Procesar Subsanación</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                `;
+            }    
+        // HU-CT-007: Borrador CT
+            getBorradorCTHTML() {
+                return `
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-2xl font-bold text-gray-900">HU-CT-007: Elaboración de Borrador CT</h2>
+                        <div class="flex space-x-2">
+                            <button onclick="this.generarBorrador()" class="bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-700">
+                                <i class="fas fa-file-alt mr-2"></i>Generar Borrador
+                            </button>
+                            <button onclick="this.enviarBorrador()" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+                                <i class="fas fa-paper-plane mr-2"></i>Enviar a Operador
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4 p-4 bg-teal-50 border border-teal-200 rounded-lg">
+                        <h3 class="font-semibold text-teal-800 mb-2">CA-CT-07.1 & CA-CT-07.2:</h3>
+                        <p class="text-teal-700 text-sm">El sistema genera borrador de CT con información registrada y notifica automáticamente al operador.</p>
+                    </div>
+
+                    <div class="space-y-6">
+                        <div class="border rounded-lg p-4">
+                            <h3 class="text-lg font-semibold mb-3">Solicitudes Listas para Borrador</h3>
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full divide-y divide-gray-200">
+                                    <thead class="bg-gray-50">
+                                        <tr>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Solicitud</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Operador</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Producto</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Análisis</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Estado</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="bg-white divide-y divide-gray-200">
+                                        <tr>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">CT-2024-003</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Cacao Premium S.A.C.</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Cacao Orgánico</td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Completo</span>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-teal-100 text-teal-800">Listo para Borrador</span>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                                <button class="text-teal-600 hover:text-teal-900 mr-3">Generar</button>
+                                                <button class="text-gray-600 hover:text-gray-900">Ver Expediente</button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="border rounded-lg p-4">
+                            <h3 class="text-lg font-semibold mb-3">Generación de Borrador CT</h3>
+                            <form onsubmit="submitForm(event, 'Borrador CT generado y enviado al operador exitosamente')" class="space-y-4">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Solicitud CT</label>
+                                        <select name="solicitud_borrador" required class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                                            <option value="">Seleccionar solicitud...</option>
+                                            <option value="CT-2024-003">CT-2024-003 - Cacao Premium S.A.C.</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Número de Borrador</label>
+                                        <input type="text" name="numero_borrador" value="BORR-CT-2024-003" readonly class="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50">
+                                    </div>
+                                </div>
+
+                                <!-- Vista Previa del Borrador CT -->
+                                <div class="border-t pt-4">
+                                    <h4 class="text-md font-semibold mb-3">Vista Previa del Borrador CT</h4>
+                                    <div class="bg-gray-50 p-6 rounded-lg border">
+                                        <div class="text-center mb-6">
+                                            <h3 class="text-xl font-bold text-gray-900">CONSTANCIA DE TRANSACCIÓN</h3>
+                                            <p class="text-sm text-gray-600">BORRADOR - No válido para transacciones comerciales</p>
+                                            <p class="text-sm text-gray-600">Número: BORR-CT-2024-003</p>
+                                        </div>
+
+                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                            <div>
+                                                <h4 class="font-semibold text-gray-800 mb-2">Información del Operador</h4>
+                                                <div class="space-y-1 text-sm">
+                                                    <p><strong>Operador:</strong> Cacao Premium S.A.C.</p>
+                                                    <p><strong>RUC:</strong> 20567890123</p>
+                                                    <p><strong>Certificación:</strong> CERT-ORG-2024-003</p>
+                                                    <p><strong>Entidad Certificadora:</strong> BCS Öko-Garantie</p>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <h4 class="font-semibold text-gray-800 mb-2">Información del Producto</h4>
+                                                <div class="space-y-1 text-sm">
+                                                    <p><strong>Producto:</strong> Cacao Orgánico</p>
+                                                    <p><strong>Cantidad:</strong> 15.2 TM</p>
+                                                    <p><strong>Estado:</strong> Seco</p>
+                                                    <p><strong>Procedencia:</strong> San Martín, Tocache</p>
+                                                    <p><strong>Cosecha:</strong> Mayo - Septiembre 2023</p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="mt-6">
+                                            <h4 class="font-semibold text-gray-800 mb-2">Documentos Verificados</h4>
+                                            <div class="grid grid-cols-2 md:grid-cols-4 gap-2 text-sm">
+                                                <div class="flex items-center">
+                                                    <i class="fas fa-check-circle text-green-600 mr-2"></i>
+                                                    <span>Factura</span>
+                                                </div>
+                                                <div class="flex items-center">
+                                                    <i class="fas fa-check-circle text-green-600 mr-2"></i>
+                                                    <span>Guía de Remisión</span>
+                                                </div>
+                                                <div class="flex items-center">
+                                                    <i class="fas fa-check-circle text-green-600 mr-2"></i>
+                                                    <span>Lista de Empaque</span>
+                                                </div>
+                                                <div class="flex items-center">
+                                                    <i class="fas fa-check-circle text-green-600 mr-2"></i>
+                                                    <span>Certificado Orgánico</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="mt-6 pt-4 border-t">
+                                            <p class="text-xs text-gray-500">
+                                                Esta constancia certifica que el producto mencionado cumple con los requisitos 
+                                                establecidos para productos orgánicos según la normativa vigente.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Observaciones del Borrador</label>
+                                    <textarea name="observaciones_borrador" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Observaciones o notas sobre el borrador..."></textarea>
+                                </div>
+
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Plazo para Revisión</label>
+                                        <select name="plazo_revision" required class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                                            <option value="">Seleccionar plazo...</option>
+                                            <option value="3">3 días hábiles</option>
+                                            <option value="5">5 días hábiles</option>
+                                            <option value="7">7 días hábiles</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Método de Envío</label>
+                                        <select name="metodo_envio" required class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                                            <option value="">Seleccionar método...</option>
+                                            <option value="correo_electronico">Correo Electrónico</option>
+                                            <option value="plataforma_sicpo">Plataforma SICPO</option>
+                                            <option value="ambos">Ambos Métodos</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="flex justify-end space-x-2">
+                                    <button type="button" class="bg-gray-500 text-white px-6 py-2 rounded-lg hover:bg-gray-600">Guardar Borrador</button>
+                                    <button type="submit" class="bg-teal-600 text-white px-6 py-2 rounded-lg hover:bg-teal-700">Generar y Enviar</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                `;
+            }  
+          // HU-CT-008: Revisión de Borrador
+            getRevisionBorradorHTML() {
+                return `
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-2xl font-bold text-gray-900">HU-CT-008: Revisión de Borrador</h2>
+                        <button onclick="this.procesarRevision()" class="bg-cyan-600 text-white px-4 py-2 rounded-lg hover:bg-cyan-700">
+                            <i class="fas fa-eye mr-2"></i>Procesar Revisión
+                        </button>
+                    </div>
+                    
+                    <div class="mb-4 p-4 bg-cyan-50 border border-cyan-200 rounded-lg">
+                        <h3 class="font-semibold text-cyan-800 mb-2">CA-CT-08.1:</h3>
+                        <p class="text-cyan-700 text-sm">El operador puede aprobar o rechazar el borrador y dejar comentarios para definir la emisión.</p>
+                    </div>
+
+                    <div class="space-y-6">
+                        <div class="border rounded-lg p-4">
+                            <h3 class="text-lg font-semibold mb-3">Borradores Enviados para Revisión</h3>
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full divide-y divide-gray-200">
+                                    <thead class="bg-gray-50">
+                                        <tr>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Borrador</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Operador</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Fecha Envío</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Plazo</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Estado</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="bg-white divide-y divide-gray-200">
+                                        <tr>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">BORR-CT-2024-003</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Cacao Premium S.A.C.</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2024-01-25</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2 días restantes</td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Aprobado por Operador</span>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                                <button class="text-cyan-600 hover:text-cyan-900 mr-3">Procesar</button>
+                                                <button class="text-gray-600 hover:text-gray-900">Ver Comentarios</button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="border rounded-lg p-4">
+                            <h3 class="text-lg font-semibold mb-3">Procesamiento de Revisión del Operador</h3>
+                            <form onsubmit="submitForm(event, 'Revisión del borrador procesada exitosamente')" class="space-y-4">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Borrador CT</label>
+                                        <select name="borrador_revision" required class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                                            <option value="">Seleccionar borrador...</option>
+                                            <option value="BORR-CT-2024-003">BORR-CT-2024-003 - Cacao Premium S.A.C.</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Fecha de Respuesta</label>
+                                        <input type="date" name="fecha_respuesta" required class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                                    </div>
+                                </div>
+
+                                <!-- Respuesta del Operador -->
+                                <div class="border-t pt-4">
+                                    <h4 class="text-md font-semibold mb-3">Respuesta del Operador</h4>
+                                    <div class="bg-green-50 p-4 rounded-lg border border-green-200">
+                                        <div class="flex items-center mb-3">
+                                            <i class="fas fa-thumbs-up text-green-600 mr-3 text-xl"></i>
+                                            <h5 class="font-medium text-green-800">BORRADOR APROBADO</h5>
+                                        </div>
+                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                            <div>
+                                                <label class="block text-sm font-medium text-gray-700 mb-1">Decisión del Operador</label>
+                                                <select name="decision_operador" required class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                                                    <option value="">Seleccionar decisión...</option>
+                                                    <option value="aprobado" selected>Aprobado</option>
+                                                    <option value="rechazado">Rechazado</option>
+                                                    <option value="con_modificaciones">Aprobado con Modificaciones</option>
+                                                </select>
+                                            </div>
+                                            <div>
+                                                <label class="block text-sm font-medium text-gray-700 mb-1">Fecha de Respuesta del Operador</label>
+                                                <input type="date" name="fecha_respuesta_operador" value="2024-01-26" readonly class="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Comentarios del Operador -->
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Comentarios del Operador</label>
+                                    <div class="bg-gray-50 p-4 rounded-lg border">
+                                        <p class="text-sm text-gray-700">
+                                            "El borrador está correcto y contiene toda la información necesaria. 
+                                            Aprobamos la emisión de la Constancia de Transacción. Agradecemos 
+                                            la rapidez en el proceso."
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <!-- Modificaciones Solicitadas (si aplica) -->
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Modificaciones Solicitadas</label>
+                                    <textarea name="modificaciones_solicitadas" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Modificaciones solicitadas por el operador (si las hay)..."></textarea>
+                                </div>
+
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Acción a Tomar</label>
+                                        <select name="accion_tomar" required class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                                            <option value="">Seleccionar acción...</option>
+                                            <option value="proceder_emision">Proceder con Emisión</option>
+                                            <option value="realizar_modificaciones">Realizar Modificaciones</option>
+                                            <option value="generar_nuevo_borrador">Generar Nuevo Borrador</option>
+                                            <option value="rechazar_solicitud">Rechazar Solicitud</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Prioridad</label>
+                                        <select name="prioridad" required class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                                            <option value="">Seleccionar prioridad...</option>
+                                            <option value="alta">Alta</option>
+                                            <option value="normal" selected>Normal</option>
+                                            <option value="baja">Baja</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Observaciones de la Entidad Certificadora</label>
+                                    <textarea name="observaciones_entidad" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Observaciones internas sobre la revisión..."></textarea>
+                                </div>
+
+                                <div class="flex justify-end space-x-2">
+                                    <button type="button" class="bg-gray-500 text-white px-6 py-2 rounded-lg hover:bg-gray-600">Solicitar Aclaración</button>
+                                    <button type="submit" class="bg-cyan-600 text-white px-6 py-2 rounded-lg hover:bg-cyan-700">Procesar Revisión</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                `;
+            }
+
+            // HU-CT-009: Emisión CT
+            getEmisionCTHTML() {
+                return `
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-2xl font-bold text-gray-900">HU-CT-009: Emisión de Constancia de Transacción</h2>
+                        <div class="flex space-x-2">
+                            <button onclick="this.emitirCT()" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700">
+                                <i class="fas fa-certificate mr-2"></i>Emitir CT Oficial
+                            </button>
+                            <button onclick="this.firmarDigitalmente()" class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700">
+                                <i class="fas fa-signature mr-2"></i>Firma Digital
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg">
+                        <h3 class="font-semibold text-red-800 mb-2">CA-CT-09.1, CA-CT-09.2 & CA-CT-09.3:</h3>
+                        <p class="text-red-700 text-sm">El sistema emite CT con número único, fecha y firma digital, la almacena en repositorio y notifica al operador.</p>
+                    </div>
+
+                    <div class="space-y-6">
+                        <div class="border rounded-lg p-4">
+                            <h3 class="text-lg font-semibold mb-3">Borradores Aprobados para Emisión</h3>
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full divide-y divide-gray-200">
+                                    <thead class="bg-gray-50">
+                                        <tr>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Borrador</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Operador</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Producto</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Aprobación</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Estado</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="bg-white divide-y divide-gray-200">
+                                        <tr>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">BORR-CT-2024-003</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Cacao Premium S.A.C.</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Cacao Orgánico - 15.2 TM</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2024-01-26</td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Listo para Emisión</span>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                                <button class="text-red-600 hover:text-red-900 mr-3">Emitir</button>
+                                                <button class="text-gray-600 hover:text-gray-900">Ver Borrador</button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="border rounded-lg p-4">
+                            <h3 class="text-lg font-semibold mb-3">Emisión de Constancia de Transacción Oficial</h3>
+                            <form onsubmit="submitForm(event, 'Constancia de Transacción emitida exitosamente y notificada al operador')" class="space-y-4">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Borrador Aprobado</label>
+                                        <select name="borrador_emitir" required class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                                            <option value="">Seleccionar borrador...</option>
+                                            <option value="BORR-CT-2024-003">BORR-CT-2024-003 - Cacao Premium S.A.C.</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Número CT Oficial</label>
+                                        <input type="text" name="numero_ct_oficial" value="CT-2024-003" readonly class="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50">
+                                    </div>
+                                </div>
+
+                                <!-- Constancia de Transacción Oficial -->
+                                <div class="border-t pt-4">
+                                    <h4 class="text-md font-semibold mb-3">Constancia de Transacción Oficial</h4>
+                                    <div class="bg-white p-6 rounded-lg border-2 border-red-200">
+                                        <div class="text-center mb-6">
+                                            <div class="flex justify-center mb-4">
+                                                <i class="fas fa-certificate text-red-600 text-4xl"></i>
+                                            </div>
+                                            <h3 class="text-2xl font-bold text-gray-900">CONSTANCIA DE TRANSACCIÓN</h3>
+                                            <p class="text-lg font-semibold text-red-600">CT-2024-003</p>
+                                            <p class="text-sm text-gray-600">Documento Oficial - Válido para transacciones comerciales</p>
+                                        </div>
+
+                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                                            <div class="border-r pr-4">
+                                                <h4 class="font-semibold text-gray-800 mb-3">Información del Operador</h4>
+                                                <div class="space-y-2 text-sm">
+                                                    <p><strong>Operador:</strong> Cacao Premium S.A.C.</p>
+                                                    <p><strong>RUC:</strong> 20567890123</p>
+                                                    <p><strong>Dirección:</strong> Av. Los Cacaoteros 123, Tocache</p>
+                                                    <p><strong>Certificación:</strong> CERT-ORG-2024-003</p>
+                                                    <p><strong>Entidad Certificadora:</strong> BCS Öko-Garantie</p>
+                                                    <p><strong>Vigencia:</strong> 31/12/2024</p>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <h4 class="font-semibold text-gray-800 mb-3">Información del Producto</h4>
+                                                <div class="space-y-2 text-sm">
+                                                    <p><strong>Producto:</strong> Cacao Orgánico</p>
+                                                    <p><strong>Variedad:</strong> Trinitario</p>
+                                                    <p><strong>Cantidad:</strong> 15.2 TM</p>
+                                                    <p><strong>Estado:</strong> Seco (12% humedad)</p>
+                                                    <p><strong>Procedencia:</strong> San Martín, Tocache</p>
+                                                    <p><strong>Cosecha:</strong> Mayo - Septiembre 2023</p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-6">
+                                            <h4 class="font-semibold text-gray-800 mb-3">Documentos Verificados</h4>
+                                            <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                                                <div class="flex items-center text-sm">
+                                                    <i class="fas fa-check-circle text-green-600 mr-2"></i>
+                                                    <span>Factura N° 001-2024</span>
+                                                </div>
+                                                <div class="flex items-center text-sm">
+                                                    <i class="fas fa-check-circle text-green-600 mr-2"></i>
+                                                    <span>Guía N° GR-001-2024</span>
+                                                </div>
+                                                <div class="flex items-center text-sm">
+                                                    <i class="fas fa-check-circle text-green-600 mr-2"></i>
+                                                    <span>Lista de Empaque</span>
+                                                </div>
+                                                <div class="flex items-center text-sm">
+                                                    <i class="fas fa-check-circle text-green-600 mr-2"></i>
+                                                    <span>Certificado Orgánico</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="border-t pt-4">
+                                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                                                <div>
+                                                    <p><strong>Fecha de Emisión:</strong> <span id="fecha-emision">27 de Enero de 2024</span></p>
+                                                    <p><strong>Lugar de Emisión:</strong> Lima, Perú</p>
+                                                </div>
+                                                <div>
+                                                    <p><strong>Entidad Certificadora:</strong> BCS Öko-Garantie Perú</p>
+                                                    <p><strong>Firma Digital:</strong> <span class="text-green-600">✓ Verificada</span></p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="mt-6 pt-4 border-t text-center">
+                                            <p class="text-xs text-gray-500">
+                                                Esta constancia certifica que el producto mencionado cumple con los requisitos 
+                                                establecidos para productos orgánicos según la normativa vigente y ha sido 
+                                                verificado por la entidad certificadora autorizada.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Fecha de Emisión</label>
+                                        <input type="date" name="fecha_emision" required class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Funcionario Emisor</label>
+                                        <input type="text" name="funcionario_emisor" value="Ing. Carlos Mendoza - Director Técnico" readonly class="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50">
+                                    </div>
+                                </div>
+
+                                <!-- Firma Digital -->
+                                <div class="border-t pt-4">
+                                    <h4 class="text-md font-semibold mb-3">Firma Digital</h4>
+                                    <div class="bg-green-50 p-4 rounded-lg border border-green-200">
+                                        <div class="flex items-center justify-between">
+                                            <div class="flex items-center">
+                                                <i class="fas fa-shield-check text-green-600 mr-3 text-xl"></i>
+                                                <div>
+                                                    <p class="font-medium text-green-800">Firma Digital Aplicada</p>
+                                                    <p class="text-sm text-green-700">Certificado: CERT-DIGITAL-BCS-2024</p>
+                                                </div>
+                                            </div>
+                                            <div class="text-right text-sm text-green-700">
+                                                <p>Hash: SHA-256</p>
+                                                <p>Timestamp: 2024-01-27 14:30:25</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Método de Notificación</label>
+                                    <div class="space-y-2">
+                                        <label class="flex items-center">
+                                            <input type="checkbox" name="notificacion[]" value="correo_electronico" checked class="mr-2">
+                                            <span class="text-sm">Correo Electrónico</span>
+                                        </label>
+                                        <label class="flex items-center">
+                                            <input type="checkbox" name="notificacion[]" value="plataforma_sicpo" checked class="mr-2">
+                                            <span class="text-sm">Plataforma SICPO</span>
+                                        </label>
+                                        <label class="flex items-center">
+                                            <input type="checkbox" name="notificacion[]" value="sms" class="mr-2">
+                                            <span class="text-sm">SMS</span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Observaciones Finales</label>
+                                    <textarea name="observaciones_finales" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Observaciones finales sobre la emisión..."></textarea>
+                                </div>
+
+                                <div class="flex justify-end space-x-2">
+                                    <button type="button" class="bg-gray-500 text-white px-6 py-2 rounded-lg hover:bg-gray-600">Vista Previa Final</button>
+                                    <button type="submit" class="bg-red-600 text-white px-6 py-2 rounded-lg hover:bg-red-700">Emitir CT Oficial</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                `;
+            }
+
+            // Método auxiliar para clases de estado
+            getEstadoClass(estado) {
+                switch (estado) {
+                    case 'En Análisis':
+                        return 'bg-blue-100 text-blue-800';
+                    case 'Con Observaciones':
+                        return 'bg-orange-100 text-orange-800';
+                    case 'Borrador Listo':
+                        return 'bg-green-100 text-green-800';
+                    default:
+                        return 'bg-gray-100 text-gray-800';
+                }
+            }
+        }
+
+        // Inicializar aplicación cuando el DOM esté listo
+        document.addEventListener('DOMContentLoaded', function() {
+            app = new ConstanciaTransaccionApp();
+            console.log('Sistema SICPO - Constancia de Transacción inicializado correctamente');
+        });
+    </script>
+</body>
+</html>
